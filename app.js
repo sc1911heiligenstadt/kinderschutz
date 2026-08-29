@@ -559,31 +559,36 @@ function meldeModalOeffnen() {
   // ohne Vereinskonto, und die Angaben fallen unter Art. 9 und Art. 10.
   // Verantwortlicher, Speicherdauer und Aufsichtsbehörde gehören deshalb hierher.
   // Muster: der ds-block der übrigen Flotte, siehe fussballcamp/anmeldung.html.
+  // ⚠️ Alles Weitere steht ZUGEKLAPPT. Die erste Fassung dieses Fixes setzte die
+  // Pflichtangaben offen darüber und war am Handy gemessen 616 px hoch -- eine Wand
+  // aus Rechtstext zwischen dem letzten Eingabefeld und dem Absende-Knopf, ausgerechnet
+  // für jemanden, der gerade etwas Schweres aufschreibt. Genau deshalb ist der
+  // Flotten-Standard ein <details class="ds-block"> in Vorgabe ZU
+  // (fussballcamp/anmeldung.html). Art. 13 verlangt die Information an der Stelle der
+  // Erhebung, nicht dass sie den Knopf verdeckt.
   $("melde-ds-hinweis").innerHTML =
-    "<p style=\"margin:0 0 6px;\"><strong>Was mit deinen Angaben passiert</strong> " +
-    "(Information nach Art. 13 DSGVO)</p>" +
-    "<p style=\"margin:0 0 6px;\"><strong>Verantwortlich</strong> ist der 1. SC 1911 " +
-    "Heiligenstadt e.V., Leineberg 2, 37308 Heilbad Heiligenstadt, Telefon 03606 612206, " +
-    "<a href=\"mailto:info@sc1911-heiligenstadt.de\">info@sc1911-heiligenstadt.de</a>.</p>" +
-    "<p style=\"margin:0 0 6px;\"><strong>Wozu:</strong> damit deine Meldung bearbeitet werden " +
-    "kann und Kinder und Jugendliche geschützt werden (Art. 6 Abs. 1 lit. f DSGVO). Stehen in " +
-    "deiner Meldung Angaben zur Gesundheit oder zur Sexualität, kommt Art. 9 Abs. 2 lit. f " +
-    "DSGVO dazu.</p>" +
-    "<p style=\"margin:0 0 6px;\"><strong>Wie lange:</strong> so lange die Bearbeitung dauert, " +
-    "längstens " + (e.loeschfristWochen || 8) + " Wochen danach. Läuft ein Verfahren bei " +
-    "Behörde oder Gericht, ruht diese Frist.</p>" +
-    "<p style=\"margin:0 0 6px;\"><strong>Deine Rechte:</strong> Auskunft, Berichtigung, " +
-    "Löschung, Einschränkung und Widerspruch. Du kannst dich auch beim Thüringer " +
-    "Landesbeauftragten für den Datenschutz und die Informationsfreiheit beschweren.</p>" +
-    // ⚠️ Der vollständige Text steht HIER im Aufklapper, nicht als Verweis auf einen
-    // anderen Tab. Ein Sprung dorthin liefe über meldeModalSchliessen() und damit
-    // durch form.reset() -- die halb getippte Meldung wäre weg. Und ein Verweis, den
-    // man nicht anklicken kann, ist ohnehin kein Weg (f-gate-kappt-weg).
+    "<p style=\"margin:0 0 4px;\">Mit dem Absenden werden deine Angaben zum Schutz von " +
+    "Kindern und Jugendlichen verarbeitet (Art. 6 Abs. 1 lit. f und Art. 9 Abs. 2 lit. f " +
+    "DSGVO).</p>" +
+    // ⚠️ Der vollständige Text steht HIER, nicht als Verweis auf einen anderen Tab.
+    // Ein Sprung dorthin liefe über meldeModalSchliessen() und damit durch
+    // form.reset() -- die halb getippte Meldung wäre weg. Und ein Verweis, den man
+    // nicht anklicken kann, ist ohnehin kein Weg (f-gate-kappt-weg).
     // Der Text ist im Worker durch ksHtmlSicher gegangen, siehe handleKsInfo.
     "<details class=\"ds-block\" style=\"margin:0;\">" +
-    "<summary>Den vollständigen Datenschutz-Text lesen</summary>" +
-    "<div class=\"ds-block-inhalt\">" + (e.datenschutzHtml || VORGABE_DATENSCHUTZ) + "</div>" +
-    "</details>";
+    "<summary>Wer verantwortlich ist, wie lange gespeichert wird, welche Rechte du hast</summary>" +
+    "<div class=\"ds-block-inhalt\">" +
+    "<p><strong>Verantwortlich</strong> ist der 1. SC 1911 Heiligenstadt e.V., Leineberg 2, " +
+    "37308 Heilbad Heiligenstadt, Telefon 03606 612206, " +
+    "<a href=\"mailto:info@sc1911-heiligenstadt.de\">info@sc1911-heiligenstadt.de</a>.</p>" +
+    "<p><strong>Wie lange:</strong> so lange die Bearbeitung dauert, längstens " +
+    (e.loeschfristWochen || 8) + " Wochen danach. Läuft ein Verfahren bei Behörde oder " +
+    "Gericht, ruht diese Frist.</p>" +
+    "<p><strong>Deine Rechte:</strong> Auskunft, Berichtigung, Löschung, Einschränkung und " +
+    "Widerspruch. Du kannst dich auch beim Thüringer Landesbeauftragten für den Datenschutz " +
+    "und die Informationsfreiheit beschweren.</p>" +
+    (e.datenschutzHtml || VORGABE_DATENSCHUTZ) +
+    "</div></details>";
 
   $("melde-anhang-block").classList.toggle("hidden", e.anhaengeErlaubt === false);
   $("melde-anonym").parentElement.classList.toggle("hidden", e.anonymErlaubt === false);
