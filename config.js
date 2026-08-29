@@ -1,0 +1,94 @@
+// Konstanten und Änderungsprotokoll der Kinderschutz-App.
+//
+// ⚠️ APP_VERSION bleibt "1.0". Neue Funktionen bekommen einen neuen
+// APP_CHANGELOG-Block darüber — die Nummer selbst wird nicht hochgezählt.
+const APP_VERSION = "1.0";
+
+// Die Notrufnummern. Stehen bewusst HIER im Code und nicht in der pflegbaren
+// Liste der externen Stellen: sie sind der letzte Weg, wenn die Datei aus
+// Nextcloud gar nicht kommt. Ein Kasten mit der 110 darf nie an einem
+// Netzwerkfehler scheitern.
+const NOTFALL_FEST = [
+  { name: "Polizei / Notruf", nummer: "110", hinweis: "Bei akuter Gefahr. Rund um die Uhr." },
+  { name: "Nummer gegen Kummer (für Kinder und Jugendliche)", nummer: "116111", hinweis: "Kostenlos und anonym. Mo–Sa 14–20 Uhr." },
+  { name: "Hilfetelefon Sexueller Missbrauch", nummer: "0800 22 55 530", hinweis: "Kostenlos und anonym. Für Betroffene und alle, die sich Sorgen machen." },
+  { name: "Elterntelefon", nummer: "0800 111 0 550", hinweis: "Kostenlos und anonym. Für Eltern, die nicht weiterwissen." }
+];
+
+// Wie lang eine Quittungsnummer aussieht: KS-XXXX-XXXX. Der Server erzeugt sie,
+// hier steht nur die Form für die Eingabemaske.
+const CODE_MUSTER = /^KS-[0-9A-HJ-NP-Z]{4}-[0-9A-HJ-NP-Z]{4}$/;
+
+// Anhänge: was der Client vorprüft. Der Server prüft NOCH EINMAL, und zwar an
+// den ersten Bytes der Datei statt an dieser Liste — eine Client-Angabe ist eine
+// Behauptung, kein Nachweis.
+const ANHANG_TYPEN = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+const ANHANG_MAX_BYTES = 8 * 1024 * 1024;
+const ANHANG_MAX_ANZAHL = 3;
+
+// Die vier Stände einer Meldung. "extern" hält die Löschfrist an, solange etwas
+// bei einer Behörde oder Fachstelle läuft; "abgeschlossen" startet sie.
+// Es gibt bewusst KEIN "unbegründet" und KEIN "abgelehnt" — die App bewertet
+// nicht, ob ein Verdacht zutrifft. Das ist Sache der Fachstellen.
+const MELDE_STAENDE = [
+  { id: "neu", label: "Neu", farbe: "rot", beschreibung: "Eingegangen, noch nicht angesehen." },
+  { id: "bearbeitung", label: "In Bearbeitung", farbe: "gelb", beschreibung: "Die Beauftragte kümmert sich darum." },
+  { id: "extern", label: "An externe Stelle gegeben", farbe: "blau", beschreibung: "Beratungsstelle, Jugendamt oder Behörde ist eingebunden. Die Löschfrist ruht." },
+  { id: "abgeschlossen", label: "Abgeschlossen", farbe: "gruen", beschreibung: "Die Bearbeitung ist beendet. Ab hier läuft die Löschfrist." }
+];
+
+const APP_CHANGELOG = [
+  {
+    version: "1.0",
+    groups: [
+      {
+        title: "Die Kinderschutz-App ist da",
+        items: [
+          "Eine eigene Anlaufstelle für Kinder- und Jugendschutz im Verein. Ansprechpartner, Meldeweg, Konzept, Schulung, Fragen und Hilfsangebote an einem Ort.",
+          "Der Info- und Meldeteil ist ohne Anmeldung erreichbar. Kinder, Jugendliche und Eltern haben keinen Vereins-Login — sie kämen sonst gar nicht hin.",
+          "Ganz oben auf der Startseite steht die Kinder- und Jugendschutzbeauftragte mit Foto, Erreichbarkeit und je einem Knopf zum Anrufen und Mailschreiben."
+        ]
+      },
+      {
+        title: "Verdacht oder Vorfall melden",
+        items: [
+          "Ein großer Knopf auf jeder Seite. Davor steht in einfachen Worten, was passiert und was nicht passiert.",
+          "Melden geht anonym — Name und Kontakt sind freiwillig. Wer angemeldet ist und trotzdem anonym meldet, wird auch anonym gespeichert. Die App hängt keinen Namen heimlich dran.",
+          "Nach dem Absenden erscheint eine Quittungsnummer. Damit kann man später nachschauen, was aus der Meldung wurde, ohne sich zu erkennen zu geben.",
+          "Bilder und PDF-Dateien können angehängt werden, höchstens drei. Der Dateityp wird am Inhalt geprüft, nicht am Namen.",
+          "Zugesagt sind drei Werktage bis zur Rückmeldung. Bleibt eine Meldung länger liegen, mahnt die App die Beauftragte."
+        ]
+      },
+      {
+        title: "Wer die Meldungen lesen darf",
+        items: [
+          "Nur die eingetragenen Beauftragten. Der globale Administrator der Tools greift hier ausdrücklich NICHT durch.",
+          "Wer in der Liste steht, ist in der App für jeden sichtbar. Jede Änderung an der Liste wird protokolliert und ebenfalls angezeigt.",
+          "Push und E-Mail sagen nur, dass eine Meldung da ist. Kein Name, kein Ort, kein Inhalt — auch nicht im Betreff."
+        ]
+      },
+      {
+        title: "Schulung mit Nachweis",
+        items: [
+          "Sechs kurze Kapitel mit je einer Quizfrage am Ende. Lesen darf jeder, auch ohne Anmeldung.",
+          "Wer angemeldet ist, sammelt Fortschritt und bekommt am Ende ein Abzeichen mit Datum.",
+          "Die Beauftragte sieht, wer durch ist. Sie kann je Person „Schulung nötig“ setzen; wer nach vier Wochen nicht durch ist, bekommt eine freundliche Erinnerung."
+        ]
+      },
+      {
+        title: "Für Kinder und Jugendliche",
+        items: [
+          "Oben ein Umschalter auf eine eigene Fassung in einfacher Sprache: große Schrift, kurze Sätze, keine Fremdwörter.",
+          "Eigener Meldeknopf und die Nummer gegen Kummer immer im Blick."
+        ]
+      },
+      {
+        title: "Alles pflegbar ohne Programmierung",
+        items: [
+          "Ansprechpartner, Konzepttext, Schulungskapitel, Quizfragen, Fragen und Antworten, externe Stellen und die Texte des Meldewegs stehen im Verwaltungsbereich.",
+          "Solange nichts gespeichert wurde, zeigt die App die Entwurfsfassung — mit einem deutlichen Hinweis, dass sie noch nicht vom Verein freigegeben ist."
+        ]
+      }
+    ]
+  }
+];

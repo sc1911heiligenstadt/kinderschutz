@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🛟 Kinder- und Jugendschutz</title>
+<meta name="theme-color" content="#1a56a0" />
+<meta name="description" content="Kinder- und Jugendschutz beim 1. SC 1911 Heiligenstadt e.V. — Ansprechpartnerin, Meldeweg und Hilfe." />
+<link rel="stylesheet" href="style.css?v=1.0" />
+<link rel="stylesheet" href="kinderschutz.css?v=1.0" />
+</head>
+<body>
+
+  <!-- ⚠️ KEIN Anmelde-Gate. Diese App ist ausdrücklich auch ohne Login nutzbar:
+       Kinder, Jugendliche und Eltern haben kein Vereinskonto — mit einem
+       Login-Vorhang davor käme genau die Zielgruppe nicht hinein. Was Anmeldung
+       braucht (Schulungsnachweis, Meldungen, Verwaltung), blendet sich einzeln
+       ein. Siehe applyAdminVisibility() in app.js. -->
+
+  <div id="app-shell">
+    <header>
+      <h1>🛟 Kinder- und Jugendschutz</h1>
+      <a href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/" class="back-to-dashboard">← Zurück zum Dashboard</a>
+      <div class="header-right">
+        <span class="header-status" id="save-status"></span>
+        <span class="header-user" id="header-user"></span>
+        <img class="header-logo" src="https://sc1911heiligenstadt.github.io/logo.svg" alt="1. SC 1911 Heiligenstadt e.V." />
+      </div>
+    </header>
+
+    <nav>
+      <button data-tab="start" class="active">Start</button>
+      <button data-tab="weg">Meldeweg</button>
+      <button data-tab="konzept">Konzept</button>
+      <button data-tab="schulung">Schulung</button>
+      <button data-tab="fragen">Fragen</button>
+      <button data-tab="hilfe">Hilfe</button>
+      <button data-tab="meldungen" class="beauftragte-only hidden" id="tab-btn-meldungen">Meldungen</button>
+      <div class="nav-right">
+        <button data-tab="verwaltung" class="editor-only hidden">Verwaltung</button>
+        <button data-tab="info">Info</button>
+      </div>
+    </nav>
+
+    <main>
+
+      <!-- ================= START ================= -->
+      <section class="tab-section active tab-inhalt" id="tab-start">
+
+        <!-- Der Umschalter Erwachsene / Kinder. Steht ganz oben, damit ein Kind
+             ihn findet, bevor es sich durch Erwachsenentexte quält. -->
+        <div class="ks-modus" id="modus-schalter" role="group" aria-label="Ansicht wählen">
+          <button type="button" data-modus="erwachsen" aria-pressed="true">Für Erwachsene</button>
+          <button type="button" data-modus="kind" aria-pressed="false">Für Kinder und Jugendliche</button>
+        </div>
+
+        <!-- Notruf. Fest im Code (NOTFALL_FEST in config.js) und nicht aus
+             Nextcloud — ein Kasten mit der 110 darf nie an einem Netzwerkfehler
+             scheitern. -->
+        <div class="ks-notfall" id="notfall-kasten" style="margin-top:16px;"></div>
+
+        <div class="ks-hinweis entwurf hidden" id="entwurf-hinweis">
+          <strong>Entwurfsfassung.</strong> Die Texte in dieser App wurden noch nicht vom
+          Verein freigegeben. Die Kontaktdaten stimmen möglicherweise noch nicht.
+        </div>
+
+        <!-- Der Kindermodus ersetzt genau diesen Block. -->
+        <div id="start-erwachsen">
+          <div class="ks-held" id="held-kachel"></div>
+
+          <button type="button" class="ks-melden-gross" id="btn-melden-start">
+            <span>🛟</span><span>Verdacht oder Vorfall melden</span>
+          </button>
+
+          <div class="ks-abschnitt" style="margin-top:22px;">
+            <h2>Weitere Ansprechpartner im Verein</h2>
+            <p class="unter">Wenn du dich lieber an jemand anderen wenden möchtest.</p>
+            <div class="ks-partner-liste" id="partner-liste"></div>
+            <div class="empty-state hidden" id="partner-leer">Es sind noch keine weiteren Ansprechpartner hinterlegt.</div>
+          </div>
+
+          <div class="ks-abschnitt">
+            <h2>Schon gemeldet? Schau nach, was daraus wurde</h2>
+            <p class="unter">Mit der Quittungsnummer aus deiner Meldung. Du musst dich dafür nicht anmelden und nicht zu erkennen geben.</p>
+            <div class="card">
+              <div class="ks-feld">
+                <label for="stand-code">Quittungsnummer</label>
+                <input type="text" id="stand-code" placeholder="KS-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+              </div>
+              <button type="button" class="btn" id="btn-stand-abfragen">Nachschauen</button>
+              <div id="stand-ergebnis" style="margin-top:14px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kindermodus -->
+        <div id="start-kind" class="hidden">
+          <p class="ks-kind-gruss" id="kind-gruss"></p>
+          <button type="button" class="ks-melden-gross" id="btn-melden-kind">
+            <span>💬</span><span>Ich möchte etwas erzählen</span>
+          </button>
+          <div id="kind-bloecke" style="margin-top:16px;"></div>
+          <div class="ks-kind-block" id="kind-wer"></div>
+        </div>
+      </section>
+
+      <!-- ================= MELDEWEG ================= -->
+      <section class="tab-section tab-inhalt" id="tab-weg">
+        <div class="ks-abschnitt">
+          <h2>So läuft eine Meldung</h2>
+          <p class="unter">Sechs Schritte. Der dritte ist der, an dem du die Sache abgeben darfst.</p>
+          <div class="ks-weg" id="weg-liste"></div>
+        </div>
+
+        <div class="ks-abschnitt">
+          <h2>Was macht unsere Kinder- und Jugendschutzbeauftragte?</h2>
+          <p class="unter">Damit klar ist, was du erwarten kannst — und was nicht.</p>
+          <div class="ks-rolle-paar">
+            <div class="ks-rolle-block ja">
+              <h3>Das tut sie</h3>
+              <ul id="rolle-macht"></ul>
+            </div>
+            <div class="ks-rolle-block nein">
+              <h3>Das tut sie ausdrücklich nicht</h3>
+              <ul id="rolle-macht-nicht"></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="ks-abschnitt">
+          <h2>Wer deine Meldung lesen kann</h2>
+          <p class="unter">Offen und nachprüfbar. Jede Änderung an dieser Liste steht darunter.</p>
+          <div class="card" id="beauftragte-offen"></div>
+        </div>
+
+        <button type="button" class="ks-melden-gross" id="btn-melden-weg">
+          <span>🛟</span><span>Verdacht oder Vorfall melden</span>
+        </button>
+      </section>
+
+      <!-- ================= KONZEPT ================= -->
+      <section class="tab-section tab-inhalt" id="tab-konzept">
+        <div class="ks-abschnitt">
+          <h2>Das Wichtigste in Kürze</h2>
+          <p class="unter">Für alle, die nicht das ganze Dokument lesen wollen.</p>
+          <div class="ks-karten" id="konzept-karten"></div>
+        </div>
+
+        <div class="ks-abschnitt">
+          <h2>Der vollständige Wortlaut</h2>
+          <p class="unter" id="konzept-stand"></p>
+          <div class="ks-wortlaut" id="konzept-wortlaut"></div>
+          <div class="btn-row" style="margin-top:14px;">
+            <button type="button" class="btn secondary" id="btn-konzept-drucken">Als PDF speichern oder drucken</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCHULUNG ================= -->
+      <section class="tab-section tab-inhalt" id="tab-schulung">
+        <div class="ks-fortschritt" id="schulung-fortschritt"></div>
+        <div id="schulung-kapitel"></div>
+
+        <!-- Nachweisliste. Gate ist das Bearbeiten-Recht, NICHT das
+             Meldungs-Recht: eine Schulungsliste ist kein Meldegeheimnis. -->
+        <div class="ks-abschnitt editor-only hidden" style="margin-top:24px;">
+          <h2>Wer ist durch?</h2>
+          <p class="unter">Der Nachweis für die Klubzertifizierung. Setze das Häkchen bei allen, die die Schulung machen sollen — die App erinnert sie dann alle vier Wochen.</p>
+          <div class="card" id="schulung-liste"></div>
+        </div>
+      </section>
+
+      <!-- ================= FRAGEN ================= -->
+      <section class="tab-section tab-inhalt" id="tab-fragen">
+        <div class="ks-abschnitt">
+          <h2>Häufige Fragen</h2>
+          <p class="unter">Tippe auf eine Frage, um die Antwort zu sehen.</p>
+          <div id="faq-liste"></div>
+        </div>
+        <button type="button" class="ks-melden-gross" id="btn-melden-fragen">
+          <span>🛟</span><span>Verdacht oder Vorfall melden</span>
+        </button>
+      </section>
+
+      <!-- ================= HILFE ================= -->
+      <section class="tab-section tab-inhalt" id="tab-hilfe">
+        <div class="ks-abschnitt">
+          <h2>Hilfe von außen</h2>
+          <p class="unter">Diese Stellen gehören nicht zum Verein. Du kannst dich dorthin wenden, ohne dass der Verein davon erfährt — auch anonym.</p>
+          <div id="hilfe-liste"></div>
+        </div>
+      </section>
+
+      <!-- ================= MELDUNGEN (nur Beauftragte) ================= -->
+      <section class="tab-section tab-inhalt beauftragte-only hidden" id="tab-meldungen">
+        <div class="ks-hinweis wichtig">
+          <strong>Vertraulich.</strong> Was hier steht, gehört nicht in eine Mannschaftsgruppe,
+          nicht in den Trainerkreis und nicht in ein Gespräch am Spielfeldrand.
+        </div>
+
+        <div class="btn-row" style="margin-bottom:14px;">
+          <button type="button" class="btn" id="btn-meldung-erfassen">+ Meldung nacherfassen</button>
+          <button type="button" class="btn secondary" id="btn-meldungen-neu-laden">Neu laden</button>
+        </div>
+
+        <div class="filter-row" style="margin-bottom:14px;">
+          <label for="meldung-filter">Zeigen</label>
+          <select id="meldung-filter">
+            <option value="offen">Offene (neu, in Bearbeitung, extern)</option>
+            <option value="alle">Alle</option>
+            <option value="neu">Nur neue</option>
+            <option value="abgeschlossen">Nur abgeschlossene</option>
+            <option value="loeschbar">Löschfrist abgelaufen</option>
+          </select>
+        </div>
+
+        <div id="meldungen-liste"></div>
+        <div class="empty-state hidden" id="meldungen-leer">Keine Meldungen in dieser Auswahl.</div>
+      </section>
+
+      <!-- ================= VERWALTUNG ================= -->
+      <section class="tab-section tab-inhalt editor-only hidden" id="tab-verwaltung">
+        <div class="ks-hinweis ruhig">
+          Alles hier lässt sich ohne Programmierkenntnisse ändern. Nach dem Speichern ist
+          es sofort für alle sichtbar.
+        </div>
+
+        <details class="card" style="margin-bottom:12px;" open>
+          <summary><strong>Ansprechpartner</strong></summary>
+          <div id="v-partner" style="margin-top:14px;"></div>
+          <button type="button" class="btn small" id="btn-v-partner-neu">+ Person hinzufügen</button>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Wer darf Meldungen lesen?</strong></summary>
+          <!-- Ändern nur mit Administrieren-Recht. Jede Änderung landet im
+               Verlauf und ist im Tab Meldeweg für JEDEN sichtbar — auch für
+               nicht angemeldete Besucher. Das ist der einzige wirksame Schutz
+               dagegen, dass der technische Administrator sich still selbst
+               einträgt. -->
+          <div class="ks-hinweis wichtig" style="margin-top:12px;">
+            Jede Änderung hier wird protokolliert und ist im Bereich Meldeweg öffentlich
+            sichtbar. Das ist Absicht.
+          </div>
+          <div id="v-beauftragte"></div>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Kinder- und Jugendschutzkonzept</strong></summary>
+          <div id="v-konzept" style="margin-top:14px;"></div>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Meldeweg und Rolle der Beauftragten</strong></summary>
+          <div id="v-weg" style="margin-top:14px;"></div>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Schulung und Quizfragen</strong></summary>
+          <div id="v-schulung" style="margin-top:14px;"></div>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Häufige Fragen</strong></summary>
+          <div id="v-faq" style="margin-top:14px;"></div>
+          <button type="button" class="btn small" id="btn-v-faq-neu">+ Frage hinzufügen</button>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Externe Stellen und Notrufnummern</strong></summary>
+          <div id="v-externe" style="margin-top:14px;"></div>
+          <button type="button" class="btn small" id="btn-v-externe-neu">+ Stelle hinzufügen</button>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Text für Kinder und Jugendliche</strong></summary>
+          <div id="v-kind" style="margin-top:14px;"></div>
+        </details>
+
+        <details class="card" style="margin-bottom:12px;">
+          <summary><strong>Einstellungen und Datenschutz</strong></summary>
+          <div id="v-einstellungen" style="margin-top:14px;"></div>
+        </details>
+
+        <details class="card admin-only hidden" style="margin-bottom:12px;">
+          <summary><strong>Werbematerial für Aushang und Vereinsseite</strong></summary>
+          <div id="v-werbung" style="margin-top:14px;"></div>
+        </details>
+      </section>
+
+      <!-- ================= INFO ================= -->
+      <!-- ⚠️ Nie gaten. Der Info-Tab ist flottenweit für alle sichtbar. -->
+      <section class="tab-section tab-inhalt" id="tab-info">
+        <div class="card">
+          <h2>Über diese App</h2>
+          <p style="margin:10px 0; line-height:1.6;">
+            Die zentrale Anlaufstelle für den Kinder- und Jugendschutz beim
+            1. SC 1911 Heiligenstadt e.V. Sie informiert, sie schult, und sie bietet einen
+            klaren Weg, einen Verdacht oder Vorfall zu melden.
+          </p>
+          <p class="muted">Version <span id="app-version"></span></p>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <h2>Datenschutz</h2>
+          <div id="info-datenschutz" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <h2>Was ist neu?</h2>
+          <div id="changelog" style="margin-top:10px;"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= MELDEFORMULAR ================= -->
+  <div class="modal-overlay hidden" id="melde-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="melde-titel">
+      <div class="modal-header">
+        <h2 id="melde-titel">Verdacht oder Vorfall melden</h2>
+        <button type="button" class="modal-close" id="melde-schliessen" aria-label="Schließen">×</button>
+      </div>
+      <div class="modal-body" id="melde-body">
+
+        <!-- Schritt 1: erklären, bevor irgendein Feld kommt. -->
+        <div id="melde-schritt-info">
+          <div class="ks-hinweis wichtig">
+            <strong>Bei akuter Gefahr: sofort 110 anrufen.</strong> Dieses Formular wird nicht
+            rund um die Uhr gelesen.
+          </div>
+          <p style="line-height:1.6; margin-bottom:12px;">
+            Wenn dir etwas auffällt, du dir Sorgen um ein Kind oder einen Jugendlichen machst
+            oder du selbst betroffen bist — dann bist du hier richtig. Du musst nichts beweisen
+            und nicht sicher sein.
+          </p>
+          <div class="ks-hinweis ruhig">
+            <strong>Wichtig:</strong> Bitte stelle keine eigenen Nachforschungen an. Frage das
+            Kind nicht aus und sprich die betroffene Person nicht darauf an. Beides kann einer
+            späteren Aufklärung schaden. Deine Aufgabe endet hier — den Rest übernimmt die
+            Kinder- und Jugendschutzbeauftragte.
+          </div>
+          <p class="muted" style="line-height:1.55; margin-bottom:14px;" id="melde-wer-liest"></p>
+          <div class="btn-row">
+            <button type="button" class="btn" id="btn-melde-weiter">Verstanden, weiter zum Formular</button>
+            <button type="button" class="btn secondary" id="btn-melde-abbrechen">Abbrechen</button>
+          </div>
+        </div>
+
+        <!-- Schritt 2: das Formular. -->
+        <form id="melde-formular" class="hidden" autocomplete="off">
+          <div class="ks-anonym-schalter">
+            <input type="checkbox" id="melde-anonym" />
+            <label for="melde-anonym" style="font-weight:600;">
+              Ich möchte anonym melden
+              <span style="display:block; font-weight:400; font-size:0.86rem; color:var(--muted); margin-top:4px;">
+                Dann speichern wir keinen Namen — auch nicht, wenn du gerade angemeldet bist.
+                Der Preis: Niemand kann bei dir nachfragen. Über deine Quittungsnummer
+                erfährst du trotzdem, was daraus geworden ist.
+              </span>
+            </label>
+          </div>
+
+          <div id="melde-kontakt-block">
+            <div class="ks-feld">
+              <label for="melde-name">Dein Name <span class="muted">(freiwillig)</span></label>
+              <input type="text" id="melde-name" maxlength="120" />
+            </div>
+            <div class="ks-feld">
+              <label for="melde-rolle">Deine Rolle im Verein <span class="muted">(freiwillig)</span></label>
+              <input type="text" id="melde-rolle" maxlength="120" placeholder="z. B. Trainer D-Junioren, Mutter, Spieler" />
+            </div>
+            <div class="ks-feld">
+              <label for="melde-telefon">Telefon <span class="muted">(freiwillig)</span></label>
+              <input type="tel" id="melde-telefon" maxlength="60" />
+            </div>
+            <div class="ks-feld">
+              <label for="melde-email">E-Mail <span class="muted">(freiwillig)</span></label>
+              <p class="erklaerung">Nur dann bekommst du die Antwort auch per Mail. Ohne Adresse geht es genauso — dann schaust du mit der Quittungsnummer nach.</p>
+              <input type="email" id="melde-email" maxlength="160" />
+            </div>
+          </div>
+
+          <hr style="border:0; border-top:1px solid var(--border); margin:18px 0;" />
+
+          <div class="ks-feld">
+            <label for="melde-datum">Wann war das? <span class="muted">(soweit bekannt)</span></label>
+            <input type="date" id="melde-datum" />
+          </div>
+          <div class="ks-feld">
+            <label for="melde-ort">Wo war das? <span class="muted">(soweit bekannt)</span></label>
+            <input type="text" id="melde-ort" maxlength="200" placeholder="z. B. Kabine 2, Auswärtsfahrt, Trainingsplatz" />
+          </div>
+          <div class="ks-feld">
+            <label for="melde-betroffen">Um wen machst du dir Sorgen?</label>
+            <p class="erklaerung">Name oder Beschreibung, wenn du ihn kennst. Wenn nicht, lass es leer.</p>
+            <input type="text" id="melde-betroffen" maxlength="200" />
+          </div>
+          <div class="ks-feld">
+            <label for="melde-beteiligte">Wer war noch dabei? <span class="muted">(freiwillig)</span></label>
+            <input type="text" id="melde-beteiligte" maxlength="300" />
+          </div>
+
+          <div class="ks-feld">
+            <label for="melde-text">Was ist passiert? <span style="color:var(--red);">*</span></label>
+            <p class="erklaerung">
+              Bitte beschreibe möglichst sachlich deine eigene Wahrnehmung bzw. wörtliche
+              Aussagen. Bitte keine Vermutungen, Bewertungen oder eigenen Ermittlungen.
+            </p>
+            <textarea id="melde-text" maxlength="6000" required
+              placeholder="Zum Beispiel: Am 14.09. nach dem Training sagte L. wörtlich: Ich will da nicht mehr allein rein. Auf meine Frage, was los sei, hat er nichts gesagt und ist gegangen."></textarea>
+            <p class="muted" style="font-size:0.8rem; margin-top:4px;"><span id="melde-text-zahl">0</span> von 6000 Zeichen</p>
+          </div>
+
+          <div class="ks-feld" id="melde-anhang-block">
+            <label for="melde-datei">Dateien anhängen <span class="muted">(freiwillig, höchstens 3)</span></label>
+            <p class="erklaerung">Bild oder PDF, je bis 8 MB. Zum Beispiel ein Bildschirmfoto einer Nachricht.</p>
+            <div class="ks-hinweis wichtig" style="margin-bottom:8px;">
+              Lade bitte <strong>kein</strong> Bild hoch, das selbst strafbar sein könnte —
+              etwa Nacktaufnahmen eines Kindes. Wenn du so etwas gefunden hast: nicht speichern,
+              nicht weiterleiten, nicht hochladen. Ruf die 110 an.
+            </div>
+            <input type="file" id="melde-datei" accept="image/jpeg,image/png,image/webp,application/pdf" multiple />
+            <div id="melde-datei-liste" style="margin-top:8px;"></div>
+          </div>
+
+          <div class="ks-hinweis ruhig" id="melde-ds-hinweis"></div>
+
+          <div class="btn-row">
+            <button type="submit" class="btn" id="btn-melde-senden">Meldung absenden</button>
+            <button type="button" class="btn secondary" id="btn-melde-abbrechen2">Abbrechen</button>
+          </div>
+        </form>
+
+        <!-- Schritt 3: die Quittung. -->
+        <div id="melde-fertig" class="hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ein Modal für alles Übrige (Meldung ansehen, nacherfassen, bearbeiten). -->
+  <div class="modal-overlay hidden" id="allgemein-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="allgemein-titel">
+      <div class="modal-header">
+        <h2 id="allgemein-titel"></h2>
+        <button type="button" class="modal-close" id="allgemein-schliessen" aria-label="Schließen">×</button>
+      </div>
+      <div class="modal-body" id="allgemein-body"></div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="config.js?v=1.0"></script>
+  <script src="inhalte-vorgabe.js?v=1.0"></script>
+  <script src="db.js?v=1.0"></script>
+  <script src="app.js?v=1.0"></script>
+</body>
+</html>
