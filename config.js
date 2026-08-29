@@ -39,6 +39,20 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.5",
+    groups: [
+      {
+        title: "Das Feld für Anhänge ist jetzt so groß wie alle anderen",
+        items: [
+          "Beim Meldeformular war „Dateien anhängen“ das letzte Feld, das kleiner war als der Rest: 24 Pixel hoch, während alles andere mindestens 44 hat. Am Handy war das ein Zielen mit dem Daumennagel.",
+          "Grund war eine Lücke in der Gestaltung: Die Regel für Eingabefelder zählt die Feldarten einzeln auf und hatte die Dateiauswahl nie dabei. Sie fiel damit auf die nackte Vorgabe des Browsers zurück.",
+          "Jetzt ist das Feld 44 Pixel hoch, hat denselben Rahmen wie die übrigen und der Knopf „Durchsuchen“ darin ist ebenfalls größer. Ein Tipp irgendwo auf das Feld öffnet die Dateiauswahl.",
+          "Damit sind alle Bedienelemente im Meldeformular mindestens 44 Pixel groß."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.4",
     groups: [
       {
