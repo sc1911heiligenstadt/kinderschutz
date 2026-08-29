@@ -39,6 +39,29 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.1",
+    groups: [
+      {
+        title: "Freie Texte werden jetzt geprüft, bevor sie auf der Seite landen",
+        items: [
+          "Der Wortlaut des Schutzkonzepts und der Datenschutztext dürfen Formatierungen enthalten — Überschriften, Absätze, Aufzählungen, Fettschrift und Links. Das bleibt so.",
+          "Neu ist, dass alles andere entfernt wird, bevor der Text angezeigt wird. Wer die Texte pflegt, kann damit nichts mehr einbauen, was im Browser eines Besuchers etwas ausführt.",
+          "Das ist wichtig, weil derselbe Konzepttext auch in Trainerdaten steht — genau dort, wo die Trainerinnen und Trainer unterschreiben.",
+          "Links funktionieren weiter, aber nur noch zu Internetseiten, E-Mail-Adressen und Telefonnummern.",
+          "Im Normalbetrieb ändert sich nichts: Die vorhandenen Texte sehen unverändert aus."
+        ]
+      },
+      {
+        title: "Aufgeräumt wird jetzt auch, was liegen geblieben ist",
+        items: [
+          "Wer eine Datei an eine Meldung hängt, das Formular dann aber nicht absendet, hinterließ bisher eine Datei, von der niemand mehr wusste.",
+          "Solche Dateien werden jetzt nach zwei Tagen von allein entfernt — aber nur, wenn keine Meldung und kein Foto darauf verweist.",
+          "An echten Meldungen ändert das nichts. Es wird weiterhin NICHTS automatisch gelöscht, was zu einer Meldung gehört."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0",
     groups: [
       {
