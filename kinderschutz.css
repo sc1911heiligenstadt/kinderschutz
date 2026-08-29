@@ -462,6 +462,29 @@ body.ks-kindmodus .ks-melden-gross:hover { background: #58329a; }
 .ks-hinweis.wichtig { background: var(--red-light); border-color: var(--red); color: var(--red); }
 .ks-hinweis.ruhig { background: var(--blue-light); border-color: var(--blue); color: #0f3d75; }
 
+/* Der Art.-13-Block über dem Absenden-Knopf (seit 2026-08-29).
+   ⚠️ Der aufgeklappte Text ist lang -- er scrollt IN SICH, statt den Dialog
+   aufzuziehen. Sonst wandert der Absenden-Knopf beim Aufklappen aus dem Bild
+   (siehe f-dialog-scroll). */
+.ds-block > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.ds-block-inhalt {
+  max-height: 260px;
+  overflow-y: auto;
+  margin-top: 8px;
+  padding-right: 6px;
+  border-top: 1px solid var(--border);
+}
+.ds-block-inhalt h3 {
+  font-size: 0.92rem;
+  margin: 12px 0 4px;
+}
+.ds-block-inhalt p { margin: 0 0 8px; }
+.ds-block-inhalt a { color: inherit; }
+
 /* ---------- Formular ---------- */
 
 .ks-feld { margin-bottom: 14px; }

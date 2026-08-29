@@ -39,6 +39,33 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.2",
+    groups: [
+      {
+        title: "Was mit deinen Angaben passiert, steht jetzt direkt am Meldeformular",
+        items: [
+          "Über dem Absende-Knopf stand bisher nur, wozu wir deine Angaben verarbeiten. Jetzt stehen dort auch: wer verantwortlich ist (mit Anschrift und Telefonnummer), wie lange gespeichert wird und wo du dich beschweren kannst.",
+          "Der vollständige Datenschutz-Text lässt sich direkt dort aufklappen. Vorher gab es nur den Satz „steht im Tab Info“ — und der war nicht einmal anklickbar. Deine schon getippte Meldung geht dabei nicht verloren.",
+          "Der Text sagt außerdem ehrlich, was „anonym“ nicht leisten kann: Deine Meldung läuft wie jeder Seitenaufruf über die Adresse deines Anschlusses. Wir speichern sie nicht bei deiner Meldung, aber ganz spurlos ist es nicht. Wer das nicht will, findet dort den Hinweis auf die Nummer gegen Kummer."
+        ]
+      },
+      {
+        title: "Im Meldeweg stehen jetzt überall Klarnamen",
+        items: [
+          "Unter „Änderungen an dieser Liste“ standen bisher die Anmeldenamen der Konten — sichtbar für jeden Besucher, auch ohne Anmeldung. Jetzt stehen dort dieselben Klarnamen wie in der Liste darüber.",
+          "Die Zusage bleibt unverändert: Jede Änderung an der Liste wird protokolliert und ist für alle sichtbar. Niemand kann sich still eintragen."
+        ]
+      },
+      {
+        title: "Die Schulungsliste zeigt nur noch, wen sie betrifft",
+        items: [
+          "In der Nachweisliste standen alle Vereinskonten, auch die der Spielerinnen und Spieler. Die machen keine Übungsleiter-Schulung und stehen dort jetzt nicht mehr.",
+          "Wer bereits einen Schulungsstand hat, bleibt in jedem Fall in der Liste — ein erteilter Nachweis verschwindet nicht."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.1",
     groups: [
       {

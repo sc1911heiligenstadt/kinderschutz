@@ -445,6 +445,13 @@ const VORGABE_DATENSCHUTZ = `
   <h3>Muss ich meinen Namen angeben?</h3>
   <p>Nein. Du kannst anonym melden. Dann speichern wir keinen Namen — auch nicht, wenn du in
   den Vereins-Tools angemeldet bist.</p>
+  <p><strong>Was „anonym“ dabei nicht leisten kann:</strong> Deine Meldung läuft wie jeder
+  Aufruf einer Internetseite über die Adresse deines Anschlusses (IP-Adresse). Wir speichern
+  sie nicht bei deiner Meldung, und die Beauftragte bekommt sie nie zu sehen. Der
+  Serverdienst, über den die Seite läuft, verarbeitet sie aber kurzzeitig — auch, damit
+  niemand die App mit Hunderten Meldungen lahmlegen kann. Wenn du ganz sicher gehen willst,
+  dass keinerlei Spur bei uns entsteht: ruf bei der Nummer gegen Kummer <strong>116 111</strong>
+  an, das ist kostenlos und anonym, oder sprich jemanden persönlich an.</p>
 
   <h3>Welche Rechte hast du?</h3>
   <p>Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Beschwerde beim
