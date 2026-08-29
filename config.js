@@ -39,6 +39,20 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.3",
+    groups: [
+      {
+        title: "Der Melde-Knopf ist am Handy jetzt immer erreichbar",
+        items: [
+          "Am Handy stand der große Melde-Knopf weit unterhalb des Bildschirms: auf der Startseite erst nach rund anderthalb Bildschirmen Wischen, quer gehaltenes Handy sogar nach zweieinhalb. Der mitschwebende Knopf am unteren Rand, der genau dafür da ist, blieb ausgerechnet dort weg.",
+          "Jetzt erscheint er, sobald der große Knopf nicht im Bild ist — also gleich beim Öffnen der Seite. Wer melden will, muss dafür nicht mehr suchen.",
+          "Im Kinderbereich heißt der schwebende Knopf jetzt „Ich möchte etwas erzählen“, genau wie der große Knopf darüber. Vorher stand dort die Erwachsenen-Formulierung „Verdacht oder Vorfall melden“.",
+          "Unverändert: Zwei gleiche Knöpfe stehen nie gleichzeitig da, und solange das Meldeformular offen ist, verschwindet der schwebende Knopf."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.2",
     groups: [
       {

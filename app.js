@@ -469,28 +469,57 @@ function changelogZeichnen() {
       '</ul></div>').join("") + '</div>').join("");
 }
 
-// Der feste Meldeknopf am unteren Rand. Er erscheint erst, wenn der große Knopf
-// oben aus dem Blick ist — sonst stünden zwei gleiche Knöpfe übereinander.
+// Der feste Meldeknopf am unteren Rand. Er erscheint, sobald der große Knopf
+// oben nicht im Bild ist — sonst stünden zwei gleiche Knöpfe übereinander.
 function fixKnopfVerdrahten() {
   const knopf = document.createElement("button");
   knopf.type = "button";
   knopf.className = "ks-melden-gross ks-melden-fix hidden";
-  knopf.innerHTML = "<span>🛟</span><span>Verdacht oder Vorfall melden</span>";
   knopf.addEventListener("click", meldeModalOeffnen);
   document.body.appendChild(knopf);
+
+  // Der feste Knopf spricht die Sprache der Seite, auf der er schwebt. Im
+  // Kinder-Modus heißt der große Knopf "Ich möchte etwas erzählen"; ein
+  // schwebendes "Verdacht oder Vorfall melden" daneben wäre genau der
+  // Behördenton, den der Kinderbereich vermeiden soll.
+  let letzteBeschriftung = null;
+  const beschriften = () => {
+    const text = document.body.classList.contains("ks-kindmodus")
+      ? "<span>💬</span><span>Ich möchte etwas erzählen</span>"
+      : "<span>🛟</span><span>Verdacht oder Vorfall melden</span>";
+    if (text !== letzteBeschriftung) {
+      knopf.innerHTML = text;
+      letzteBeschriftung = text;
+    }
+  };
 
   const beobachten = () => {
     const aktiverTab = document.querySelector(".tab-section.active");
     const aufMeldeTab = aktiverTab && ["tab-meldungen", "tab-verwaltung", "tab-info"].indexOf(aktiverTab.id) !== -1;
     const oben = $("btn-melden-start");
-    const sichtbar = oben && oben.getBoundingClientRect().bottom > 0 && !oben.closest(".hidden");
-    const zeigen = !aufMeldeTab && !sichtbar && !$("melde-modal").classList.contains("hidden") === false;
+    // ⚠️ ZWEI Bedingungen, nicht eine. `bottom > 0` allein heißt nur "nicht nach
+    // oben weggescrollt" und ist damit auch für einen Knopf WEIT UNTERHALB des
+    // Bildschirmrands wahr. Genau dort steht er am Handy: hochkant bei 1392 px
+    // auf 812 px Schirmhöhe, quer bei 952 px auf 375 px (gemessen 2026-08-29).
+    // Ohne `top < innerHeight` galt er über den GANZEN Scrollweg als sichtbar —
+    // der feste Knopf blieb auf der Startseite also immer weg, ausgerechnet auf
+    // der Seite, auf der jeder ankommt und für die er gebaut wurde.
+    // Für ein display:none-Element bleibt es bei `bottom > 0` = false, die
+    // Erkennung "steht auf einem anderen Tab" hängt also weiter daran.
+    const r = oben ? oben.getBoundingClientRect() : null;
+    const obenImBild = !!r && r.bottom > 0 && r.top < window.innerHeight && !oben.closest(".hidden");
+    const modalZu = $("melde-modal").classList.contains("hidden");
+    const zeigen = !aufMeldeTab && !obenImBild && modalZu;
+    beschriften();
     knopf.classList.toggle("hidden", !zeigen);
     document.body.classList.toggle("ks-hat-fixknopf", zeigen);
   };
   window.addEventListener("scroll", beobachten, { passive: true });
   window.addEventListener("resize", beobachten);
-  document.querySelectorAll("nav button[data-tab]").forEach((b) => b.addEventListener("click", () => setTimeout(beobachten, 0)));
+  // ⚠️ Der Modus-Umschalter muss mit horchen: er tauscht den großen Knopf aus
+  // und ändert damit sowohl die Sichtbarkeit als auch die Beschriftung.
+  document.querySelectorAll("nav button[data-tab], #modus-schalter button")
+    .forEach((b) => b.addEventListener("click", () => setTimeout(beobachten, 0)));
   beobachten();
 }
 
