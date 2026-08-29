@@ -45,7 +45,7 @@ const APP_CHANGELOG = [
         title: "Der schwebende Melde-Knopf verdeckt keine Notrufnummer mehr",
         items: [
           "In Fassung 1.3 erschien der Knopf sofort beim Öffnen der Seite — und lag damit auf dem Notfallkasten: quer gehalten mitten auf der 116111, hochkant auf dem Elterntelefon.",
-          "Jetzt wartet er, bis der Notfallkasten durchgescrollt ist. Am Handy ist das nach etwa einem Daumenwisch (134 Pixel hochkant, 270 quer). Eine Nummer, die im Notfall gewählt wird, hat Vorrang.",
+          "Jetzt wartet er, bis der Notfallkasten durchgescrollt ist. Am Handy ist das etwa ein Daumenwisch weit — wie weit genau, hängt davon ab, wie viele Nummern im Kasten stehen. Eine Nummer, die im Notfall gewählt wird, hat Vorrang.",
           "Damit stimmt der Satz aus 1.3 „erscheint gleich beim Öffnen der Seite“ nicht mehr — er erscheint jetzt kurz danach. Alles andere bleibt: nie zwei gleiche Knöpfe gleichzeitig, und während das Meldeformular offen ist, ist er weg."
         ]
       },
