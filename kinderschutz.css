@@ -634,3 +634,40 @@ body.ks-hat-fixknopf .tab-inhalt { padding-bottom: 84px; }
    eine einzelne abweichende Leiste wäre verwirrender als die zwei Millimeter. */
 .btn, a.btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 .btn.tiny { min-height: 36px; }
+
+/* Dasselbe Argument gilt für das × am Dialog: die geteilte style.css gibt ihm
+   nur `padding: 4px 8px`, gemessen 30×29 px. Das ist der Knopf, mit dem ein Kind
+   aus dem halb getippten Meldeformular wieder herauskommt — er darf nicht das
+   kleinste Ziel der ganzen Seite sein. Das Kreuz selbst bleibt gleich groß, nur
+   die Fläche darum wächst. */
+.modal-close {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Niedrige Schirme: das quer gehaltene Handy ist nur 375 px hoch. Die geteilte
+   style.css hält oben und unten je 40 px frei (`.modal-overlay { padding: 40px }`)
+   und deckelt den Dialog auf `calc(100vh - 80px)`. Von 375 px bleiben damit
+   295 px Karte, minus 67 px Kopfzeile: **228 px Formularfläche**. Wer dort eine
+   Meldung schreibt, sieht knapp zwei Eingabefelder auf einmal.
+   Hier auf 12 px Rand heruntergesetzt — das bringt 56 px zurück (351 statt 295).
+
+   ⚠️ Zwei max-height-Zeilen mit Absicht (Muster wie f-alte-ios): `svh` ist die
+   Höhe MIT eingeblendeter Browserleiste und damit die einzige, bei der der
+   Dialog garantiert ganz ins Bild passt. Ein Browser ohne `svh` überliest die
+   zweite Zeile und behält die vh-Fassung. */
+@media (max-height: 500px) {
+  .modal-overlay { padding: 12px 16px; }
+  /* Die Kopfzeile ist durch das 44-px-Kreuz oben mitgewachsen (67 -> 81 px) und
+     hätte einen guten Teil des Gewinns gleich wieder aufgefressen. Auf niedrigen
+     Schirmen deshalb weniger Innenabstand — das Kreuz behält seine 44 px. */
+  .modal-header { padding: 8px 16px; }
+  .modal {
+    max-height: calc(100vh - 24px);
+    max-height: calc(100svh - 24px);
+  }
+}

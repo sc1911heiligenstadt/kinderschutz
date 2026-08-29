@@ -509,7 +509,26 @@ function fixKnopfVerdrahten() {
     const r = oben ? oben.getBoundingClientRect() : null;
     const obenImBild = !!r && r.bottom > 0 && r.top < window.innerHeight && !oben.closest(".hidden");
     const modalZu = $("melde-modal").classList.contains("hidden");
-    const zeigen = !aufMeldeTab && !obenImBild && modalZu;
+
+    // ⚠️ Der schwebende Knopf darf den Notfallkasten NICHT überdecken
+    // (Entscheidung Michel, 2026-08-29). Er steht unten fest; solange der Kasten
+    // bis in diesen Streifen hineinreicht, läge er quer mitten auf der 116111
+    // und hochkant auf dem Elterntelefon. Eine Nummer, die im Notfall gewählt
+    // wird, hat Vorrang vor einem Knopf, der einen Wisch später erscheint.
+    // Sichtbar wird er dadurch ab rund 134 px Scrollweg hochkant und 267 px quer
+    // — statt wie vorher nie (gemessen 2026-08-29).
+    // KNOPF_STREIFEN ist bewusst dieselbe Zahl wie das `padding-bottom` von
+    // `.ks-hat-fixknopf .tab-inhalt` in kinderschutz.css: beide beschreiben den
+    // Streifen, den der Knopf am unteren Rand belegt. Nicht die eine ändern,
+    // ohne die andere mitzunehmen.
+    const KNOPF_STREIFEN = 84;
+    const kasten = $("notfall-kasten");
+    const kr = kasten ? kasten.getBoundingClientRect() : null;
+    // Auf jedem anderen Tab ist der Kasten display:none, das Rect also lauter
+    // Nullen — `0 > (innerHeight - 84)` ist false, dort bremst nichts.
+    const verdecktNotfall = !!kr && kr.bottom > (window.innerHeight - KNOPF_STREIFEN);
+
+    const zeigen = !aufMeldeTab && !obenImBild && modalZu && !verdecktNotfall;
     beschriften();
     knopf.classList.toggle("hidden", !zeigen);
     document.body.classList.toggle("ks-hat-fixknopf", zeigen);

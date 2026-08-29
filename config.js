@@ -39,6 +39,27 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.4",
+    groups: [
+      {
+        title: "Der schwebende Melde-Knopf verdeckt keine Notrufnummer mehr",
+        items: [
+          "In Fassung 1.3 erschien der Knopf sofort beim Öffnen der Seite — und lag damit auf dem Notfallkasten: quer gehalten mitten auf der 116111, hochkant auf dem Elterntelefon.",
+          "Jetzt wartet er, bis der Notfallkasten durchgescrollt ist. Am Handy ist das nach etwa einem Daumenwisch (134 Pixel hochkant, 270 quer). Eine Nummer, die im Notfall gewählt wird, hat Vorrang.",
+          "Damit stimmt der Satz aus 1.3 „erscheint gleich beim Öffnen der Seite“ nicht mehr — er erscheint jetzt kurz danach. Alles andere bleibt: nie zwei gleiche Knöpfe gleichzeitig, und während das Meldeformular offen ist, ist er weg."
+        ]
+      },
+      {
+        title: "Größere Tippziele und mehr Platz im Meldeformular",
+        items: [
+          "Das × zum Schließen eines Dialogs war 30 mal 29 Pixel groß und damit das kleinste Ziel der Seite — ausgerechnet der Knopf, mit dem man aus einem halb getippten Formular wieder herauskommt. Jetzt sind es 44 mal 44 Pixel. Das Kreuz selbst sieht gleich aus, nur die Fläche drumherum ist größer.",
+          "Auf einem quer gehaltenen Handy ist der Bildschirm nur 375 Pixel hoch. Vom Meldeformular waren davon 228 Pixel sichtbar, also knapp zwei Eingabefelder. Jetzt sind es 290 Pixel — rund ein Viertel mehr, ohne dass etwas aus dem Bild fällt.",
+          "Am Computer und am hochkant gehaltenen Handy ändert sich an der Größe der Dialoge nichts."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.3",
     groups: [
       {
