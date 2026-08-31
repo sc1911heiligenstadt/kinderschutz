@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1a56a0" />
 <meta name="description" content="Kinder- und Jugendschutz beim 1. SC 1911 Heiligenstadt e.V. — Ansprechpartnerin, Meldeweg und Hilfe." />
 <link rel="stylesheet" href="style.css?v=1.0" />
-<link rel="stylesheet" href="kinderschutz.css?v=1.3" />
+<link rel="stylesheet" href="kinderschutz.css?v=1.4" />
 </head>
 <body>
 
@@ -160,6 +160,62 @@
       <section class="tab-section tab-inhalt" id="tab-schulung">
         <div class="ks-fortschritt" id="schulung-fortschritt"></div>
         <div id="schulung-kapitel"></div>
+
+        <!-- ===== Konzept bestätigen (seit 2026-08-31) =====
+             Unterschrieben wird seit dem Umbau HIER, am Ende der Schulung.
+             Gespeichert und angezeigt wird weiterhin in der Trainerakte
+             (E:\Trainerdaten) — es zieht die Bedienung um, nicht der Bestand,
+             deshalb bleibt jede früher geleistete Unterschrift gültig.
+
+             ⚠️ GEKOPPELT an den Schulungsabschluss: erst die sechs Kapitel,
+             dann die Unterschrift. Michel-Entscheidung 2026-08-31, ausdrücklich
+             GEGEN meine Empfehlung (ich hatte beides unabhängig vorgeschlagen,
+             damit niemand blockiert wird) — nicht "korrigieren".
+
+             ⚠️ Wer den Abschnitt überhaupt sieht, entscheidet der SERVER:
+             my-jugendschutz-stand steht in NUR_VERTRAGSPFLICHTIG_ACTIONS und
+             liefert 403 für Konten ohne Trainervertrag. Ein Spieler bekommt den
+             Block gar nicht erst — und könnte auch beim Absenden nicht
+             durchkommen. Kein reines Ausblenden.
+
+             Die drei Zustände sind statisch im Markup, weil das Canvas seinen
+             Signatur-Pad behalten muss; app.js schaltet nur die Sichtbarkeit
+             (ein innerHTML würde das Pad bei jedem Neuzeichnen wegwerfen). -->
+        <div class="ks-abschnitt" id="konzept-bestaetigen-abschnitt" style="display:none; margin-top:24px;">
+          <h2>Konzept bestätigen</h2>
+          <p class="unter">Deine Unterschrift kommt in deine Trainerakte — dorthin, wo auch Vertrag und Verhaltenskodex liegen.</p>
+          <div class="card">
+            <div class="ks-hinweis ruhig" id="kb-schulung-fehlt" style="display:none;"></div>
+            <div id="kb-stand" style="display:none;"></div>
+
+            <div id="kb-formular" style="display:none;">
+              <!-- Vorgabe ZU. Am Handy stünden sonst hunderte Pixel Rechtstext
+                   zwischen Schulung und Unterschrift; .ds-block-inhalt scrollt
+                   in sich. Gleiches Muster wie der Art.-13-Block am
+                   Meldeformular — dort gemessen, nicht Geschmack. -->
+              <details class="ds-block" id="kb-wortlaut-block">
+                <summary>Den vollen Wortlaut noch einmal lesen</summary>
+                <div class="ds-block-inhalt" id="kb-wortlaut"></div>
+              </details>
+
+              <p class="muted" id="kb-satz" style="margin:14px 0;"></p>
+
+              <div class="signature-box">
+                <label for="kb-sig-canvas">Unterschrift</label>
+                <canvas id="kb-sig-canvas"></canvas>
+                <div class="btn-row" style="justify-content:flex-start; margin-top:6px;">
+                  <button type="button" class="btn secondary small" id="btn-kb-sig-clear">Löschen</button>
+                </div>
+              </div>
+
+              <div class="ks-hinweis wichtig" id="kb-fehler" style="display:none;"></div>
+
+              <div class="btn-row" style="justify-content:flex-start; margin-top:16px;">
+                <button type="button" class="btn success" id="btn-kb-submit">Ich bestätige</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Nachweisliste. Gate ist das Bearbeiten-Recht, NICHT das
              Meldungs-Recht: eine Schulungsliste ist kein Meldegeheimnis. -->
@@ -452,9 +508,13 @@
 
   <div class="toast hidden" id="toast"></div>
 
-  <script src="config.js?v=1.6"></script>
+  <script src="config.js?v=1.7"></script>
   <script src="inhalte-vorgabe.js?v=1.1"></script>
-  <script src="db.js?v=1.0"></script>
-  <script src="app.js?v=1.4"></script>
+  <!-- Wiederverwendete Komponente, wortgleich aus E:\Trainerdaten übernommen
+       (die Unterschrift ist mit dem Bestätigen von dort hierher gezogen). Wer
+       sie anfasst, fasst zwei Apps an. -->
+  <script src="signature-pad.js?v=1.0"></script>
+  <script src="db.js?v=1.1"></script>
+  <script src="app.js?v=1.5"></script>
 </body>
 </html>

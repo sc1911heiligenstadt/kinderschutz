@@ -709,3 +709,33 @@ body.ks-hat-fixknopf .tab-inhalt { padding-bottom: 84px; }
   font-size: 14px;
   cursor: pointer;
 }
+
+/* ---------- Unterschrift beim Konzept bestätigen (seit 2026-08-31) ----------
+   Übernommen aus E:\Trainerdaten\style.css, wo dieselbe Komponente steht.
+
+   ⚠️ Bewusst HIER und nicht in der geteilten style.css — dieselbe Begründung
+   wie bei den Tippzielen weiter oben: die Flotten-Datei bliebe sonst als
+   einzige abweichend, ohne dass es jemand sieht. Soll die Flotte das
+   bekommen, ist das ein eigener Vorgang über meine-multi-repo-rollout.
+
+   ⚠️ `touch-action: none` ist tragend, kein Feinschliff: ohne die Zeile
+   scrollt das Handy beim Unterschreiben die Seite, statt einen Strich zu
+   zeichnen. */
+.signature-box { margin-top: 10px; }
+.signature-box label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.signature-box canvas {
+  width: 100%;
+  height: 150px;
+  border: 1.5px dashed var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  touch-action: none;
+  display: block;
+}
+.signature-box canvas:active { border-color: var(--blue); }

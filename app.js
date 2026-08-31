@@ -19,6 +19,18 @@ let nutzerListe = [];       // für die Auswahlfelder in der Verwaltung
 let kindModus = false;
 let anhangPuffer = [];      // { id, name, typ, groesse } vor dem Absenden
 
+// Konzept-Bestätigung (Weg in die Trainerakte, siehe db.js).
+// ⚠️ kbStand kennt DREI Zustände, und alle drei sind nötig:
+//   null   = noch nicht geholt         -> Abschnitt bleibt weg
+//   false  = kein Trainerkonto (403)   -> Abschnitt bleibt weg, wird nicht erneut gefragt
+//   Objekt = der Stand aus der Akte    -> Abschnitt erscheint
+// Ein zweiwertiges Flag könnte "noch nichts gefragt" nicht von "darf nicht"
+// unterscheiden und fragte bei jedem Tab-Wechsel neu.
+let kbSigPad = null;
+let kbStand = null;
+let kbAngezeigteVersion = "";
+let kbSendetGerade = false;
+
 const MODUS_KEY = "ks_modus";
 
 // ---------- Kleinkram ----------
@@ -110,6 +122,7 @@ async function start() {
   modusVerdrahten();
   meldeFormularVerdrahten();
   standAbfrageVerdrahten();
+  kbVerdrahten();
 
   try {
     const antwort = await ladeOeffentlich();
@@ -132,6 +145,28 @@ async function start() {
   rechteAnwenden();
   allesZeichnen();
   fixKnopfVerdrahten();
+  hashSprung();
+}
+
+// Direktsprung auf einen Tab per #name — gebraucht seit 2026-08-31, weil die
+// Trainerakte mit #schulung hierher verweist. Ohne das landete jeder, den sie
+// schickt, auf der Startseite und müsste den Tab selbst suchen.
+//
+// ⚠️ Nur auf Tabs, deren Knopf für diese Person wirklich sichtbar ist. Sonst
+// öffnete ein getippter Hash die Meldungsliste für jemanden ohne das Recht. Die
+// Daten kämen zwar ohnehin nicht (der Worker prüft, nicht die Anzeige) — ein
+// sichtbarer leerer Tab sähe aber aus wie ein Zugang, den es nicht gibt.
+//
+// ⚠️ Bewusst OHNE CSS.escape: der Name wird vorher auf Kleinbuchstaben und
+// Bindestrich eingegrenzt. CSS.escape gibt es auf den alten iPads der Flotte
+// nicht überall.
+function hashSprung() {
+  let ziel = "";
+  try { ziel = String(location.hash || "").replace(/^#/, "").trim().toLowerCase(); } catch (_) { return; }
+  if (!ziel || !/^[a-z-]+$/.test(ziel)) return;
+  const knopf = document.querySelector('nav button[data-tab="' + ziel + '"]');
+  if (!knopf || knopf.classList.contains("hidden")) return;
+  tabZeigen(ziel);
 }
 
 // Die Vorgabe als vollständiger Datensatz — für den Fehlerfall und für den
@@ -210,6 +245,12 @@ function tabZeigen(name) {
   // wie möglich über die Leitung gehen.
   if (name === "meldungen" && darfMeldungen() && meldungen === null) meldungenLaden();
   if (name === "schulung" && canEdit() && schulungsListe === null) schulungsListeLaden();
+  // Der eigene Bestätigungsstand liegt in einer ANDEREN App (Trainerakte) und
+  // wird deshalb erst beim Öffnen geholt — nicht bei jedem Seitenaufruf.
+  if (name === "schulung" && currentUser && kbStand === null) kbStandLaden();
+  // Und beim Öffnen des Tabs das Unterschriftsfeld nachmessen: bis eben lag es
+  // hinter einem nicht aktiven Tab und kannte seine Breite nicht.
+  if (name === "schulung") kbCanvasNachmessen();
   if (name === "verwaltung" && canEdit()) verwaltungZeichnen();
 }
 
@@ -849,6 +890,268 @@ function schulungZeichnen() {
   $("schulung-kapitel").querySelectorAll(".ks-quiz-antwort").forEach((b) => {
     b.addEventListener("click", () => quizAntwort(b));
   });
+
+  konzeptBestaetigenZeichnen();
+}
+
+// ---------- Konzept bestätigen ----------
+//
+// Seit 2026-08-31 wird das Kinder- und Jugendschutzkonzept HIER unterschrieben,
+// am Ende der Schulung. Gespeichert und angezeigt wird es weiterhin in der
+// Trainerakte (E:\Trainerdaten): Datenmodell, Unterschriften-Ablage und der
+// Fassungsabgleich im Worker sind unverändert geblieben. Es zieht die Bedienung
+// um, nicht der Bestand — jede früher geleistete Unterschrift bleibt gültig.
+//
+// ⚠️ GEKOPPELT: ohne abgeschlossene Schulung keine Unterschrift. Michel-
+// Entscheidung vom 2026-08-31, ausdrücklich GEGEN meine Empfehlung (ich hatte
+// beides unabhängig vorgeschlagen, damit niemand blockiert wird). Nicht
+// "korrigieren".
+//
+// ⚠️ Folge daraus, die man kennen muss: der Schulungsabschluss wird gegen die
+// AKTUELLE Kapitelliste geprüft (siehe CLAUDE.md). Kommt ein Kapitel dazu,
+// verliert jeder seinen Abschluss und kann bis zum Nachholen nicht neu
+// bestätigen. Die BEREITS erteilte Bestätigung bleibt davon unberührt, weil sie
+// in der Trainerakte liegt und nicht an der Schulung hängt.
+
+function kbVerdrahten() {
+  const canvas = $("kb-sig-canvas");
+  if (!canvas) return;
+  // Das Canvas steckt beim Anlegen in einem display:none-Abschnitt. Der
+  // ResizeObserver in createSignaturePad greift beim Sichtbarwerden nach —
+  // ohne ihn bliebe es auf 300x150 hängen und Stift und Tinte liefen
+  // auseinander.
+  kbSigPad = createSignaturePad(canvas, () => {});
+  $("btn-kb-sig-clear").addEventListener("click", () => {
+    kbSigPad.clear();
+    kbFehler("");
+  });
+  $("btn-kb-submit").addEventListener("click", kbAbsenden);
+}
+
+function kbFehler(text) {
+  const el = $("kb-fehler");
+  el.textContent = text || "";
+  el.style.display = text ? "" : "none";
+}
+
+// ⚠️ KeinTrainerError ist hier KEIN Fehler, sondern die Antwort "für dieses
+// Konto ist keine Bestätigung vorgesehen". Diese App ist für ALLE Angemeldeten
+// sichtbar, Spieler eingeschlossen — die sollen den Abschnitt gar nicht sehen.
+// Gemerkt als false, damit nicht bei jedem Tab-Wechsel neu gefragt wird.
+async function kbStandLaden() {
+  if (!currentUser) return;
+  try {
+    kbStand = await ladeJugendschutzStand();
+  } catch (e) {
+    if (e instanceof KeinTrainerError || e instanceof NotLoggedInError) {
+      kbStand = false;
+    } else {
+      // Netzwerk- oder Serverfehler: den Abschnitt trotzdem zeigen und den
+      // Grund benennen. Stillschweigend wegzulassen sähe aus wie "gibt es
+      // nicht" — und wer bestätigen muss, suchte vergeblich.
+      kbStand = { fehler: e.message };
+    }
+  }
+  konzeptBestaetigenZeichnen();
+}
+
+function konzeptBestaetigenZeichnen() {
+  const abschnitt = $("konzept-bestaetigen-abschnitt");
+  if (!abschnitt) return;
+
+  if (!currentUser || kbStand === null || kbStand === false) {
+    abschnitt.style.display = "none";
+    // ⚠️ Verstecken ist nicht Räumen. kbStand wird auch bei Sitzungsverlust auf
+    // false gesetzt — dann stünden Bestätigungsdatum und Klarname weiter im DOM,
+    // nur unsichtbar. Wegwerfen ist gefahrlos: der Weg zurück führt über
+    // kbStandLaden(), das alles neu aufbaut.
+    // innerHTML = "" statt replaceChildren() wegen der alten iPads der Flotte.
+    $("kb-stand").innerHTML = "";
+    $("kb-schulung-fehlt").textContent = "";
+    $("kb-wortlaut").innerHTML = "";
+    $("kb-satz").textContent = "";
+    if (kbSigPad) kbSigPad.resetSilent();
+    return;
+  }
+  abschnitt.style.display = "";
+
+  const hinweis = $("kb-schulung-fehlt");
+  const standBox = $("kb-stand");
+  const formular = $("kb-formular");
+  hinweis.style.display = "none";
+  standBox.style.display = "none";
+  formular.style.display = "none";
+
+  if (kbStand.fehler) {
+    hinweis.className = "ks-hinweis wichtig";
+    hinweis.textContent = "Dein Bestätigungsstand konnte nicht geladen werden: " + kbStand.fehler;
+    hinweis.style.display = "";
+    return;
+  }
+
+  // Bestätigt und die Fassung gilt noch: nur der Stand, kein Formular.
+  if (kbStand.aktuell) {
+    standBox.innerHTML =
+      '<span class="ks-abzeichen">✅ Konzept bestätigt am ' + esc(datumDe(kbStand.bestaetigtAm)) + '</span>' +
+      '<p class="muted" style="margin-top:8px;">Fassung ' + esc(kbStand.version) +
+      '. Deine Unterschrift liegt in deiner Trainerakte, dort wo auch Vertrag und Verhaltenskodex stehen.</p>';
+    standBox.style.display = "";
+    return;
+  }
+
+  // Die Kopplung. Gegen dieselbe Kapitelliste gerechnet wie der Fortschritt
+  // oben — eine zweite Zählweise liefe irgendwann auseinander.
+  const kapitel = feld("schulung", VORGABE_SCHULUNG);
+  const durch = (meinStand && meinStand.kapitel) || {};
+  const geschafft = kapitel.filter((k) => durch[k.id]).length;
+
+  if (!(kapitel.length > 0 && geschafft === kapitel.length)) {
+    let text = "Erst die Schulung, dann die Bestätigung. Du hast " + geschafft +
+      " von " + kapitel.length + " Kapiteln geschafft.";
+    if (kbStand.bestaetigtAm) {
+      text += " Deine bisherige Bestätigung vom " + datumDe(kbStand.bestaetigtAm) +
+        " (Fassung " + kbStand.version + ") bleibt so lange bestehen.";
+    }
+    hinweis.className = "ks-hinweis ruhig";
+    hinweis.textContent = text;
+    hinweis.style.display = "";
+    return;
+  }
+
+  const kon = feld("konzept", { version: VORGABE_KONZEPT_VERSION, html: VORGABE_KONZEPT_HTML, istEntwurf: true });
+
+  // ⚠️ Solange im Verwaltungsbereich noch nichts gespeichert wurde, zeigt diese
+  // App die VORGABE (Fassung 2.0 aus inhalte-vorgabe.js) — der Worker der
+  // Trainerakte hält aber 1.1 für die geltende Fassung und würde jede
+  // Bestätigung mit 409 abweisen. Ein Entwurf soll ohnehin niemand
+  // unterschreiben. Deshalb hier gar kein Formular, sondern der Grund.
+  //
+  // ⚠️ Nicht dadurch "lösen", die angezeigte Fassung wegzulassen: der Worker
+  // überspringt den Abgleich dann und schreibt 1.1 in die Akte, obwohl 2.0 auf
+  // dem Schirm stand. Genau das soll die Fassungsnummer belegen.
+  if (kon.istEntwurf || (daten && daten.istVorgabe)) {
+    hinweis.className = "ks-hinweis entwurf";
+    hinweis.textContent = "Das Konzept ist noch ein Entwurf und vom Verein nicht freigegeben. " +
+      "Sobald es im Verwaltungsbereich einmal gespeichert wurde, kannst du hier bestätigen." +
+      (kbStand.bestaetigtAm
+        ? " Deine Bestätigung vom " + datumDe(kbStand.bestaetigtAm) + " (Fassung " + kbStand.version + ") bleibt bis dahin bestehen."
+        : "");
+    hinweis.style.display = "";
+    return;
+  }
+
+  // Unterschreiben.
+  // ⚠️ Derselbe Wortlaut wie im Tab Konzept, aus derselben schon geladenen
+  // Antwort. Der Worker hat ihn beim Ausliefern durch ksHtmlSicher() geschickt.
+  // Wer hier je einen zweiten Leseweg baut, holt den XSS-Fund vom 29.08.2026
+  // zurück — ausgerechnet auf der Seite, auf der unterschrieben wird.
+  $("kb-wortlaut").innerHTML = kon.html || VORGABE_KONZEPT_HTML;
+  kbAngezeigteVersion = String(kon.version || "");
+
+  if (kbStand.bestaetigtAm && !kbStand.aktuell) {
+    hinweis.className = "ks-hinweis entwurf";
+    hinweis.textContent = "Das Konzept wurde geändert. Du hast am " +
+      datumDe(kbStand.bestaetigtAm) + " die Fassung " + kbStand.version +
+      " bestätigt, jetzt gilt " + kbAngezeigteVersion +
+      ". Bitte lies den Text noch einmal und bestätige neu.";
+    hinweis.style.display = "";
+  }
+
+  $("kb-satz").textContent = "Ich, " + (currentUser.name || currentUser.username) +
+    ", bestätige, dass ich das Kinder- und Jugendschutzkonzept in der Fassung " +
+    kbAngezeigteVersion + " gelesen und verstanden habe.";
+
+  formular.style.display = "";
+  kbCanvasNachmessen();
+}
+
+// ⚠️ Das Canvas lag bis eben in einem display:none-Block und war deshalb 0x0 —
+// es hängt auf der HTML-Vorgabe 300x150 fest, während CSS es auf volle Breite
+// zieht. Ohne Nachmessen laufen Stift und Tinte um den Faktor der Verzerrung
+// auseinander (gemessen: 300 gegen 1128 Pixel).
+//
+// ⚠️ Der ResizeObserver in signature-pad.js reicht dafür NICHT. Gemessen am
+// 2026-08-31: er feuert auf diesem Canvas kein einziges Mal, auch nicht beim
+// Wechsel von versteckt auf sichtbar. Genau deshalb ruft auch Trainerdaten seine
+// Pads in _showTrainerVertragsPanels() von Hand nach — der Beobachter ist dort
+// die zweite Absicherung, nicht die erste. Wer diese Zeile für überflüssig hält,
+// muss vorher messen, nicht annehmen.
+//
+// resize() steigt bei 0x0 selbst aus und zeichnet einen vorhandenen Strich aus
+// savedDataUrl neu — mehrfaches Rufen ist gefahrlos und verliert nichts.
+function kbCanvasNachmessen() {
+  if (kbSigPad) kbSigPad.resize();
+}
+
+async function kbAbsenden() {
+  if (kbSendetGerade) return;
+  kbFehler("");
+
+  if (!kbSigPad || kbSigPad.isEmpty()) {
+    kbFehler("Bitte unterschreibe zuerst im Feld darüber.");
+    return;
+  }
+
+  // Vor- und Nachname kommen aus der Akte, wenn es dort schon einen Datensatz
+  // gibt. Nur wenn nicht, wird der Klarname geteilt — erstes Wort Vorname, Rest
+  // Nachname. ⚠️ Das ist geraten und kann bei Doppelnamen danebenliegen; für den
+  // Abgleich im Worker genügt es trotzdem, weil der beide Teile wieder
+  // zusammensetzt. Falsch getrennt landet es nur, wenn der Worker daraus einen
+  // NEUEN Datensatz anlegt — den korrigiert die Person beim ersten Ausfüllen
+  // des Trainerformulars.
+  let vorname = (kbStand && kbStand.vorname) || "";
+  let nachname = (kbStand && kbStand.nachname) || "";
+  if (!vorname && !nachname) {
+    const teile = String(currentUser.name || "").trim().split(/\s+/).filter(Boolean);
+    if (teile.length > 1) {
+      vorname = teile[0];
+      nachname = teile.slice(1).join(" ");
+    } else {
+      nachname = teile[0] || "";
+    }
+  }
+
+  const btn = $("btn-kb-submit");
+  kbSendetGerade = true;
+  btn.disabled = true;
+  const alterText = btn.textContent;
+  btn.textContent = "Wird gespeichert …";
+
+  try {
+    const antwort = await bestaetigeJugendschutzkonzept(
+      kbSigPad.toDataURL(), vorname, nachname, kbAngezeigteVersion
+    );
+    // Antwort des Workers übernehmen statt selbst zu rechnen: er hat die
+    // geltende Fassung gerade frisch gelesen.
+    kbStand = Object.assign({}, kbStand, {
+      vorhanden: true,
+      bestaetigtAm: antwort.jugendschutzBestaetigtAm,
+      version: antwort.jugendschutzVersion,
+      geltendeVersion: antwort.jugendschutzVersion,
+      aktuell: true
+    });
+    kbSigPad.clear();
+    toast("Danke — die Bestätigung liegt in deiner Trainerakte.", "gut");
+    konzeptBestaetigenZeichnen();
+  } catch (e) {
+    if (e instanceof NotLoggedInError) {
+      kbFehler("Deine Sitzung ist abgelaufen. Bitte melde dich über die Tools-Übersicht neu an.");
+    } else if (e instanceof KeinTrainerError) {
+      // Kann eintreten, wenn die Vertragspflicht während der Sitzung entzogen
+      // wurde. Dann ist der Abschnitt gegenstandslos.
+      kbStand = false;
+      konzeptBestaetigenZeichnen();
+    } else {
+      // ⚠️ Darunter steckt auch der 409 des Workers ("Fassung hat sich geändert")
+      // mit seinem eigenen, erklärenden Text. Der wird durchgereicht statt
+      // ersetzt — er sagt genau, was zu tun ist.
+      kbFehler(e.message);
+    }
+  } finally {
+    kbSendetGerade = false;
+    btn.disabled = false;
+    btn.textContent = alterText;
+  }
 }
 
 function quizHtml(kapitel, schonBestanden) {

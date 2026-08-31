@@ -39,6 +39,22 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.6",
+    groups: [
+      {
+        title: "Das Konzept wird jetzt hier bestätigt, am Ende der Schulung",
+        items: [
+          "Bisher lag der Text des Kinder- und Jugendschutzkonzepts in dieser App, unterschrieben wurde aber in den Trainerdaten. Zwei Orte für dieselbe Sache — wer die Schulung gemacht hatte, musste zum Bestätigen noch in eine zweite App.",
+          "Jetzt steht beides beieinander: Am Ende der Schulung erscheint der Abschnitt „Konzept bestätigen“ mit dem vollen Wortlaut zum Nachlesen und einem Feld für die Unterschrift.",
+          "Erst die Schulung, dann die Unterschrift. Der Abschnitt schaltet sich frei, sobald alle sechs Kapitel geschafft sind — vorher steht dort, wie viele noch fehlen.",
+          "Gespeichert wird die Bestätigung weiterhin in der Trainerakte, dort wo auch Vertrag und Verhaltenskodex liegen. Alle früher geleisteten Unterschriften bleiben gültig, es ändert sich nur der Weg dorthin.",
+          "In den Trainerdaten steht ab sofort nur noch, ob und wann bestätigt wurde, mit einem Knopf hierher.",
+          "Den Abschnitt sieht nur, wer im Verein einen Trainervertrag hat. Für Spieler, Eltern und alle anderen Angemeldeten bleibt er weg — das prüft der Server, nicht die Anzeige."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.5",
     groups: [
       {

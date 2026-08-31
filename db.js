@@ -243,3 +243,79 @@ async function ladeNutzerliste() {
 async function fetchMe() {
   return gatewayRequest({ action: "me", app: GATEWAY_APP_ID });
 }
+
+// ---------- Konzept bestätigen (Weg in die Trainerakte) ----------
+//
+// ⚠️ Diese beiden Aktionen sprechen NICHT das Gateway an, sondern den
+// Submit-Worker der Trainerdaten-App. Seit 2026-08-31 wird das Konzept HIER
+// unterschrieben (am Ende der Schulung), gespeichert und angezeigt aber
+// weiterhin in der Trainerakte — dort liegen auch Vertrag und Kodex, dort
+// schaut die Geschäftsstelle nach, dort hängt die Frist.
+//
+// ⚠️ Es zieht die BEDIENUNG um, nicht der Bestand: Datenmodell
+// (`jugendschutzBestaetigtAm`/`jugendschutzVersion`), Unterschriften-Ablage und
+// der Fassungsabgleich im Worker bleiben unverändert. Jede früher geleistete
+// Unterschrift bleibt damit gültig.
+//
+// ⚠️ Der angezeigte Konzepttext kommt aus `kinderschutz-info` wie überall in
+// dieser App — also durch `ksHtmlSicher()` im Worker gereinigt. Wer hier je
+// einen zweiten Leseweg für den Wortlaut baut, holt den XSS-Fund vom 29.08.2026
+// zurück, und zwar auf der Seite, auf der unterschrieben wird.
+//
+// Die Origin ist dieselbe (sc1911heiligenstadt.github.io) — an CORS musste
+// nichts angefasst werden.
+const TRAINERDATEN_WORKER_URL = "https://trainerdaten1.michel-brunner.workers.dev";
+
+// Antwort des Workers auf 403: für dieses Konto ist kein Trainervertrag
+// vorgesehen (Spieler, Eltern, Betreuer ohne Vertrag). Das Gate ist damit
+// serverseitig — die App blendet den Block daraufhin ganz aus, statt ihn
+// anzuzeigen und erst beim Absenden zu scheitern.
+class KeinTrainerError extends Error {
+  constructor(message) {
+    super(message || "Für dieses Konto ist keine Bestätigung vorgesehen");
+    this.name = "KeinTrainerError";
+  }
+}
+
+async function trainerdatenSenden(payload) {
+  const token = getSessionToken();
+  if (!token) throw new NotLoggedInError();
+  const resp = await fetch(TRAINERDATEN_WORKER_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+    body: JSON.stringify(payload)
+  });
+  if (resp.status === 401) throw new NotLoggedInError("Sitzung abgelaufen");
+  if (resp.status === 403) throw new KeinTrainerError();
+  if (!resp.ok) {
+    let msg = `Trainerakte nicht erreichbar (HTTP ${resp.status})`;
+    try {
+      const body = await resp.json();
+      if (body && body.error) msg = body.error;
+    } catch (_) { /* Antwort ohne JSON-Körper — Standardtext bleibt */ }
+    throw new Error(msg);
+  }
+  return resp.json();
+}
+
+// Eigener Stand: wann und für welche Fassung wurde zuletzt bestätigt, und gilt
+// diese Fassung noch. Legt keinen Datensatz an.
+async function ladeJugendschutzStand() {
+  return trainerdatenSenden({ action: "my-jugendschutz-stand" });
+}
+
+// Bestätigung absenden.
+//
+// ⚠️ `angezeigteVersion` ist die Fassung, die WIRKLICH auf dem Schirm stand. Der
+// Worker vergleicht sie mit der geltenden und lehnt bei Abweichung mit 409 ab.
+// Ohne diesen Abgleich stünde in der Akte eine Bestätigung für einen Text, den
+// die Person nie zu sehen bekam — und genau das soll die Fassungsnummer belegen.
+async function bestaetigeJugendschutzkonzept(signatureDataUrl, vorname, nachname, version) {
+  return trainerdatenSenden({
+    action: "submit-jugendschutzkonzept",
+    signatureDataUrl,
+    vorname: vorname || "",
+    nachname: nachname || "",
+    angezeigteVersion: String(version || "")
+  });
+}
