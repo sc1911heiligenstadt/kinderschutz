@@ -39,6 +39,20 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.7",
+    groups: [
+      {
+        title: "Der Datenschutz-Text sagt jetzt auch, was bei Schulung und Bestätigung passiert",
+        items: [
+          "Der Text im Reiter „Info“ handelte ausschließlich von Meldungen. Über den Schulungsfortschritt und die Unterschrift unter dem Schutzkonzept stand dort kein Wort — obwohl beides gespeichert wird.",
+          "Neuer Abschnitt „Schulung und Bestätigung des Schutzkonzepts“: was gespeichert wird (Name, Zeitpunkt, Fassungsnummer, Unterschriftsbild), wozu, auf welcher Grundlage, wo es liegt und wie lange.",
+          "Wichtig darin: Die acht Wochen gelten nur für Meldungen. Eine Bestätigung bleibt, solange du für den Verein tätig bist — das steht jetzt ausdrücklich da, statt dass man die falsche Frist auf sich bezieht.",
+          "Der Abschnitt betrifft nur Trainerinnen, Trainer und Betreuende mit Vereinskonto. Für alle anderen ändert sich nichts."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.6",
     groups: [
       {

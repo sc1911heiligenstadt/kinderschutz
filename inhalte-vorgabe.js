@@ -405,6 +405,20 @@ const VORGABE_KINDERTEXT = {
 // AUSDRÜCKLICH KEINE Einwilligung. Eine Einwilligung wäre widerrufbar; im
 // Kinderschutz wäre das die falsche Grundlage. Wer diesen Text ändert, ändert das
 // bitte nicht mit.
+//
+// ⚠️ Seit 2026-08-31 beschreibt der Text ZWEI Verarbeitungen, nicht mehr nur eine.
+// Die Abnahme an diesem Tag fand den Abschnitt "Schulung und Bestätigung des
+// Schutzkonzepts" fehlend: der Text handelte ausschließlich von Meldungen, während
+// die App längst Schulungsfortschritte und seit dem Umzug auch Unterschriften
+// erhebt. Beide Abschnitte müssen getrennt bleiben — sie haben verschiedene Zwecke,
+// verschiedene Betroffene (jeder vs. nur Trainer), verschiedene Speicherorte
+// (Meldungsdatei vs. Trainerakte) und vor allem **verschiedene Fristen**: die acht
+// Wochen gelten NUR für Meldungen. Wer sie auf die Bestätigung ausdehnt, verspricht
+// eine Löschung, die niemand ausführt (siehe f-loeschen-kopien, f-warnung-vs-fix).
+//
+// ⚠️ Für die Bestätigung ist Art. 9 NICHT einschlägig — dort fällt keine besondere
+// Kategorie an, nur Name, Zeitpunkt, Fassung und Unterschriftsbild. Deshalb steht
+// dort bewusst allein lit. f, ohne Art. 9.
 const VORGABE_DATENSCHUTZ = `
   <h3>Wer verarbeitet deine Daten?</h3>
   <p>Der 1. SC 1911 Heiligenstadt e.V. Die Anschrift und die Kontaktdaten stehen im Impressum
@@ -452,6 +466,28 @@ const VORGABE_DATENSCHUTZ = `
   niemand die App mit Hunderten Meldungen lahmlegen kann. Wenn du ganz sicher gehen willst,
   dass keinerlei Spur bei uns entsteht: ruf bei der Nummer gegen Kummer <strong>116 111</strong>
   an, das ist kostenlos und anonym, oder sprich jemanden persönlich an.</p>
+
+  <h3>Schulung und Bestätigung des Schutzkonzepts</h3>
+  <p>Das betrifft nur Trainerinnen, Trainer und Betreuende mit einem Vereinskonto — nicht
+  die Meldungen und nicht Besucher dieser Seite.</p>
+  <p>Wenn du angemeldet bist, merkt sich der Verein, <strong>welche Kapitel der Schulung du
+  geschafft hast und wann</strong>. Bestätigst du am Ende der Schulung das Schutzkonzept,
+  werden zusätzlich <strong>dein Name, der Zeitpunkt, die Fassungsnummer des Konzepts und
+  dein Unterschriftsbild</strong> gespeichert.</p>
+  <p><strong>Wozu?</strong> Der Verein muss nachweisen können, dass die Menschen, die mit
+  Kindern und Jugendlichen arbeiten, das Schutzkonzept kennen. Dieser Nachweis wird unter
+  anderem für die Klubzertifizierung gebraucht.</p>
+  <p><strong>Auf welcher Grundlage?</strong> Auf dem berechtigten Interesse am Schutz von
+  Kindern und Jugendlichen und am Nachweis der dafür getroffenen Maßnahmen
+  (Art. 6 Abs. 1 lit. f DSGVO). Auch das ist <strong>keine Einwilligung</strong> — ohne
+  Bestätigung ist eine Tätigkeit im Kinder- und Jugendbereich nicht vorgesehen.</p>
+  <p><strong>Wo liegt das?</strong> Nicht bei den Meldungen, sondern in deiner
+  <strong>Trainerakte</strong> im Werkzeug Trainerdaten. Dort siehst du auch selbst, wann du
+  zuletzt bestätigt hast. Die Kinder- und Jugendschutzbeauftragte kann daran nur ablesen,
+  wer geschult ist — sie sieht darüber keine Meldungen.</p>
+  <p><strong>Wie lange?</strong> Solange du für den Verein tätig bist, und danach so lange,
+  wie der Verein den Nachweis noch führen muss. <strong>Die Acht-Wochen-Frist oben gilt
+  dafür nicht</strong> — sie betrifft ausschließlich Meldungen.</p>
 
   <h3>Welche Rechte hast du?</h3>
   <p>Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Beschwerde beim

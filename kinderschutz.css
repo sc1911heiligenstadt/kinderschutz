@@ -466,24 +466,36 @@ body.ks-kindmodus .ks-melden-gross:hover { background: #58329a; }
    ⚠️ Der aufgeklappte Text ist lang -- er scrollt IN SICH, statt den Dialog
    aufzuziehen. Sonst wandert der Absenden-Knopf beim Aufklappen aus dem Bild
    (siehe f-dialog-scroll). */
-.ds-block > summary {
+/* ⚠️ `.ds-block` ist flottenweit der MARKER für den Art.-13-Block, nicht bloß
+   ein Aussehen. Der Abnahme-Lauf siebt öffentliche Seiten danach ab. Wer die
+   Klasse für einen beliebigen Aufklapper mitbenutzt, erzeugt dort einen
+   Fehlalarm: die Seite gilt als "hat Datenschutztext", obwohl nur ein
+   Fließtext drinsteht. Genau das war am 2026-08-31 beim Konzept-Aufklapper
+   passiert und ist der Grund für `.ks-aufklapper` — gleiches Aussehen,
+   ehrlicher Name. Für Art.-13-Blöcke bleibt `.ds-block` reserviert. */
+.ds-block > summary,
+.ks-aufklapper > summary {
   cursor: pointer;
   font-weight: 600;
   padding: 4px 0;
 }
-.ds-block-inhalt {
+.ds-block-inhalt,
+.ks-aufklapper-inhalt {
   max-height: 260px;
   overflow-y: auto;
   margin-top: 8px;
   padding-right: 6px;
   border-top: 1px solid var(--border);
 }
-.ds-block-inhalt h3 {
+.ds-block-inhalt h3,
+.ks-aufklapper-inhalt h3 {
   font-size: 0.92rem;
   margin: 12px 0 4px;
 }
-.ds-block-inhalt p { margin: 0 0 8px; }
-.ds-block-inhalt a { color: inherit; }
+.ds-block-inhalt p,
+.ks-aufklapper-inhalt p { margin: 0 0 8px; }
+.ds-block-inhalt a,
+.ks-aufklapper-inhalt a { color: inherit; }
 
 /* ---------- Formular ---------- */
 

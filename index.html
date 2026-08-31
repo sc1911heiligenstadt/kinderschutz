@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1a56a0" />
 <meta name="description" content="Kinder- und Jugendschutz beim 1. SC 1911 Heiligenstadt e.V. — Ansprechpartnerin, Meldeweg und Hilfe." />
 <link rel="stylesheet" href="style.css?v=1.0" />
-<link rel="stylesheet" href="kinderschutz.css?v=1.4" />
+<link rel="stylesheet" href="kinderschutz.css?v=1.5" />
 </head>
 <body>
 
@@ -190,12 +190,17 @@
 
             <div id="kb-formular" style="display:none;">
               <!-- Vorgabe ZU. Am Handy stünden sonst hunderte Pixel Rechtstext
-                   zwischen Schulung und Unterschrift; .ds-block-inhalt scrollt
-                   in sich. Gleiches Muster wie der Art.-13-Block am
-                   Meldeformular — dort gemessen, nicht Geschmack. -->
-              <details class="ds-block" id="kb-wortlaut-block">
+                   zwischen Schulung und Unterschrift; der Inhalt scrollt in
+                   sich. Gleiches Muster wie der Art.-13-Block am Meldeformular
+                   — dort gemessen, nicht Geschmack.
+                   ⚠️ Bewusst NICHT `.ds-block`: die Klasse ist flottenweit der
+                   Marker für den Art.-13-Block und wird von der Abnahme
+                   abgesiebt. Hier steht der Konzept-Wortlaut, kein
+                   Datenschutztext — `.ks-aufklapper` sieht gleich aus und lügt
+                   den nächsten Prüflauf nicht an. -->
+              <details class="ks-aufklapper" id="kb-wortlaut-block">
                 <summary>Den vollen Wortlaut noch einmal lesen</summary>
-                <div class="ds-block-inhalt" id="kb-wortlaut"></div>
+                <div class="ks-aufklapper-inhalt" id="kb-wortlaut"></div>
               </details>
 
               <p class="muted" id="kb-satz" style="margin:14px 0;"></p>
@@ -508,8 +513,8 @@
 
   <div class="toast hidden" id="toast"></div>
 
-  <script src="config.js?v=1.7"></script>
-  <script src="inhalte-vorgabe.js?v=1.1"></script>
+  <script src="config.js?v=1.8"></script>
+  <script src="inhalte-vorgabe.js?v=1.2"></script>
   <!-- Wiederverwendete Komponente, wortgleich aus E:\Trainerdaten übernommen
        (die Unterschrift ist mit dem Bestätigen von dort hierher gezogen). Wer
        sie anfasst, fasst zwei Apps an. -->
