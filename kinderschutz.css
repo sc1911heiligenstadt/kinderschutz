@@ -1,0 +1,753 @@
+/* Eigenes Aussehen der Kinderschutz-App. style.css bleibt die geteilte Flotten-
+   Grundlage, hier steht nur, was diese App zusätzlich braucht.
+
+   Zwei Leitgedanken:
+   1. Die Beauftragte steht optisch im Mittelpunkt — sie ist die erste Sache,
+      die jemand sieht, und sie ist auf jedem Tab über die Kopfleiste erreichbar.
+   2. Der Meldeknopf muss auf jedem Gerät ohne Suchen zu finden sein. Deshalb
+      liegt er zusätzlich fest am unteren Rand, sobald man scrollt. */
+
+:root {
+  --ks-vertrauen: #1a56a0;
+  --ks-vertrauen-hell: #e8f0fb;
+  --ks-warm: #b8571f;
+  --ks-warm-hell: #fdf0e6;
+  --ks-notfall: #c0392b;
+  --ks-notfall-hell: #fdecea;
+  --ks-kind: #6d3fb5;
+  --ks-kind-hell: #f1ebfc;
+}
+
+/* ---------- Kopfbereich mit dem Umschalter ---------- */
+
+.ks-modus {
+  display: flex;
+  gap: 6px;
+  background: var(--gray);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+}
+.ks-modus button {
+  flex: 1 1 auto;
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  min-height: 40px;
+}
+.ks-modus button[aria-pressed="true"] {
+  background: var(--white);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+body.ks-kindmodus .ks-modus button[aria-pressed="true"] {
+  background: var(--ks-kind);
+  color: var(--white);
+}
+
+/* ---------- Notfall: steht ganz oben und wird nie ausgeblendet ---------- */
+
+.ks-notfall {
+  background: var(--ks-notfall-hell);
+  border: 2px solid var(--ks-notfall);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.ks-notfall h2 {
+  font-size: 1rem;
+  color: var(--ks-notfall);
+  margin-bottom: 6px;
+}
+.ks-notfall p { font-size: 0.92rem; margin-bottom: 10px; }
+.ks-notfall-nummern {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 8px;
+}
+.ks-notfall-nummern a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--white);
+  border: 1px solid var(--ks-notfall);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: var(--text);
+  min-height: 44px;
+}
+.ks-notfall-nummern .nr { font-weight: 700; font-size: 1.05rem; color: var(--ks-notfall); }
+.ks-notfall-nummern .was { font-size: 0.82rem; color: var(--muted); }
+
+/* ---------- Die Beauftragte: die wichtigste Kachel der App ---------- */
+
+.ks-held {
+  background: linear-gradient(135deg, var(--ks-vertrauen) 0%, #16407a 100%);
+  color: var(--white);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.ks-held .ks-held-kopf {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ks-held-foto {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.15);
+  flex: 0 0 auto;
+}
+.ks-held-foto-leer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+}
+/* Der Textblock muss schrumpfen dürfen, sonst sprengt ein langer Name die
+   Zeile auf dem Handy. minmax(0,...) reicht bei Flex nicht — min-width:0 ist
+   hier das, was wirkt. */
+.ks-held-text { flex: 1 1 200px; min-width: 0; }
+.ks-held-text .rolle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+.ks-held-text h2 { font-size: 1.45rem; line-height: 1.2; margin: 2px 0 4px; }
+.ks-held-text .funktion { font-size: 0.95rem; opacity: 0.92; }
+.ks-held-text .erreichbar { font-size: 0.85rem; opacity: 0.85; margin-top: 6px; }
+.ks-held-botschaft {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+.ks-held-knoepfe {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.ks-held-knoepfe a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--ks-vertrauen);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-weight: 700;
+  text-decoration: none;
+  min-height: 48px;
+}
+.ks-held-knoepfe a.aus {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+
+/* ---------- Weitere Ansprechpartner ---------- */
+
+.ks-partner-liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 12px;
+}
+.ks-partner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+.ks-partner img, .ks-partner .ks-partner-foto-leer {
+  width: 56px; height: 56px; border-radius: 50%;
+  object-fit: cover; flex: 0 0 auto;
+  background: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+}
+.ks-partner-text { min-width: 0; flex: 1 1 auto; }
+.ks-partner-text strong { display: block; }
+.ks-partner-text .funktion { font-size: 0.85rem; color: var(--muted); }
+.ks-partner-wege { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.ks-partner-wege a {
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ks-vertrauen);
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ---------- Der große Meldeknopf ---------- */
+
+.ks-melden-gross {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--ks-warm);
+  color: var(--white);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  font: inherit;
+  font-size: 1.12rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 60px;
+  box-shadow: var(--shadow);
+}
+.ks-melden-gross:hover { background: #a04a19; }
+
+/* Der feste Knopf am unteren Rand. Erscheint, sobald der große oben aus dem
+   Blick gescrollt ist — auf dem Handy ist das nach wenigen Zentimetern. */
+.ks-melden-fix {
+  position: fixed;
+  left: 12px; right: 12px; bottom: 12px;
+  z-index: 60;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  padding: 14px 18px;
+  font-size: 1.02rem;
+  min-height: 54px;
+}
+/* Auf breiten Schirmen mittig und nicht über die ganze Breite. */
+@media (min-width: 700px) {
+  .ks-melden-fix { left: 50%; right: auto; transform: translateX(-50%); width: 340px; }
+}
+
+/* ---------- Meldeweg als Stufen ---------- */
+
+.ks-weg { display: grid; gap: 10px; }
+.ks-weg-schritt {
+  display: flex;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--ks-vertrauen);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.ks-weg-schritt.betont {
+  border-left-color: var(--ks-warm);
+  background: var(--ks-warm-hell);
+}
+.ks-weg-nr {
+  flex: 0 0 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ks-vertrauen);
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+.ks-weg-schritt.betont .ks-weg-nr { background: var(--ks-warm); }
+.ks-weg-text { min-width: 0; }
+.ks-weg-text strong { display: block; margin-bottom: 3px; }
+.ks-weg-text p { font-size: 0.9rem; color: var(--muted); line-height: 1.45; }
+
+/* ---------- Rolle: macht / macht nicht ---------- */
+
+.ks-rolle-paar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 12px;
+}
+.ks-rolle-block {
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+.ks-rolle-block.ja { border-left: 4px solid var(--green); background: var(--green-light); }
+.ks-rolle-block.nein { border-left: 4px solid var(--red); background: var(--red-light); }
+.ks-rolle-block h3 { font-size: 1rem; margin-bottom: 8px; }
+.ks-rolle-block li { margin-left: 18px; margin-bottom: 6px; font-size: 0.92rem; line-height: 1.45; }
+
+/* ---------- Zusammenfassung des Konzepts ---------- */
+
+.ks-karten {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 12px;
+}
+.ks-karte {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.ks-karte .icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+.ks-karte strong { display: block; margin-bottom: 4px; }
+.ks-karte p { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
+
+/* Der Konzept-Wortlaut. Eigene Typografie, weil es ein Dokument ist. */
+.ks-wortlaut { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.ks-wortlaut h3 { margin: 18px 0 8px; font-size: 1.05rem; color: var(--ks-vertrauen); }
+.ks-wortlaut h3:first-child { margin-top: 0; }
+.ks-wortlaut p { margin-bottom: 10px; line-height: 1.6; }
+.ks-wortlaut ul { margin: 0 0 12px 20px; }
+.ks-wortlaut li { margin-bottom: 6px; line-height: 1.5; }
+
+/* ---------- Schulung ---------- */
+
+.ks-fortschritt {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.ks-balken {
+  height: 10px;
+  background: var(--gray);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 8px 0 6px;
+}
+.ks-balken > span { display: block; height: 100%; background: var(--green); border-radius: 999px; transition: width 0.3s; }
+.ks-abzeichen {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-light); color: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 999px; padding: 8px 14px; font-weight: 700;
+}
+
+.ks-kapitel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.ks-kapitel > summary {
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  min-height: 52px;
+  list-style: none;
+}
+.ks-kapitel > summary::-webkit-details-marker { display: none; }
+.ks-kapitel-haken {
+  flex: 0 0 24px; height: 24px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+}
+.ks-kapitel.fertig .ks-kapitel-haken { background: var(--green); border-color: var(--green); color: var(--white); }
+.ks-kapitel-inhalt { padding: 0 16px 16px; }
+.ks-kapitel-inhalt p { margin-bottom: 10px; line-height: 1.6; }
+.ks-kapitel-inhalt ul { margin: 0 0 12px 20px; }
+.ks-kapitel-inhalt li { margin-bottom: 6px; line-height: 1.5; }
+
+.ks-quiz { background: var(--gray); border-radius: 10px; padding: 14px; margin-top: 12px; }
+.ks-quiz .frage { font-weight: 600; margin-bottom: 10px; }
+.ks-quiz-antwort {
+  display: flex; gap: 10px; align-items: flex-start;
+  width: 100%; text-align: left;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; margin-bottom: 8px;
+  font: inherit; cursor: pointer; min-height: 48px;
+}
+.ks-quiz-antwort.richtig { border-color: var(--green); background: var(--green-light); }
+.ks-quiz-antwort.falsch { border-color: var(--red); background: var(--red-light); }
+.ks-quiz-antwort[disabled] { cursor: default; }
+.ks-quiz-erklaerung {
+  margin-top: 8px; padding: 10px 12px;
+  background: var(--blue-light); border-left: 3px solid var(--blue);
+  border-radius: 8px; font-size: 0.9rem; line-height: 1.5;
+}
+
+/* ---------- Meldungen (nur Beauftragte) ---------- */
+
+.ks-meldung {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.ks-meldung.neu { border-left: 4px solid var(--red); }
+.ks-meldung.bearbeitung { border-left: 4px solid var(--gold); }
+.ks-meldung.extern { border-left: 4px solid var(--blue); }
+.ks-meldung.abgeschlossen { border-left: 4px solid var(--green); }
+.ks-meldung-kopf { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.ks-chip {
+  font-size: 0.78rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--gray); color: var(--muted);
+}
+.ks-chip.rot { background: var(--red-light); color: var(--red); border-color: var(--red); }
+.ks-chip.gelb { background: var(--gold-light); color: var(--gold); border-color: var(--gold); }
+.ks-chip.blau { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+.ks-chip.gruen { background: var(--green-light); color: var(--green); border-color: var(--green); }
+.ks-meldung-text {
+  white-space: pre-wrap;
+  background: var(--gray);
+  border-radius: 8px;
+  padding: 12px;
+  line-height: 1.55;
+  margin: 8px 0;
+}
+.ks-meldung-felder { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 8px; margin-bottom: 8px; }
+.ks-meldung-feld { font-size: 0.88rem; }
+.ks-meldung-feld .label { color: var(--muted); font-size: 0.78rem; display: block; }
+.ks-frist-warnung {
+  background: var(--gold-light); border: 1px solid var(--gold); color: #7a5a10;
+  border-radius: 8px; padding: 10px 12px; font-size: 0.88rem; margin: 8px 0;
+}
+.ks-frist-warnung.dringend { background: var(--red-light); border-color: var(--red); color: var(--red); }
+
+/* ---------- Kindermodus ---------- */
+
+body.ks-kindmodus { background: var(--ks-kind-hell); }
+body.ks-kindmodus .ks-kind-block {
+  background: var(--white);
+  border: 2px solid var(--ks-kind);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+body.ks-kindmodus .ks-kind-block .icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+body.ks-kindmodus .ks-kind-block strong { display: block; font-size: 1.25rem; margin-bottom: 8px; color: var(--ks-kind); }
+body.ks-kindmodus .ks-kind-block p { font-size: 1.1rem; line-height: 1.65; }
+body.ks-kindmodus .ks-melden-gross { background: var(--ks-kind); font-size: 1.2rem; }
+body.ks-kindmodus .ks-melden-gross:hover { background: #58329a; }
+.ks-kind-gruss {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ks-kind);
+  text-align: center;
+  margin-bottom: 14px;
+  line-height: 1.35;
+}
+
+/* ---------- Hinweiskästen ---------- */
+
+.ks-hinweis {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  border: 1px solid var(--border);
+  background: var(--gray);
+}
+.ks-hinweis.entwurf { background: var(--gold-light); border-color: var(--gold); color: #7a5a10; }
+.ks-hinweis.wichtig { background: var(--red-light); border-color: var(--red); color: var(--red); }
+.ks-hinweis.ruhig { background: var(--blue-light); border-color: var(--blue); color: #0f3d75; }
+
+/* Der Art.-13-Block über dem Absenden-Knopf (seit 2026-08-29).
+   ⚠️ Der aufgeklappte Text ist lang -- er scrollt IN SICH, statt den Dialog
+   aufzuziehen. Sonst wandert der Absenden-Knopf beim Aufklappen aus dem Bild
+   (siehe f-dialog-scroll). */
+/* ⚠️ `.ds-block` ist flottenweit der MARKER für den Art.-13-Block, nicht bloß
+   ein Aussehen. Der Abnahme-Lauf siebt öffentliche Seiten danach ab. Wer die
+   Klasse für einen beliebigen Aufklapper mitbenutzt, erzeugt dort einen
+   Fehlalarm: die Seite gilt als "hat Datenschutztext", obwohl nur ein
+   Fließtext drinsteht. Genau das war am 2026-08-31 beim Konzept-Aufklapper
+   passiert und ist der Grund für `.ks-aufklapper` — gleiches Aussehen,
+   ehrlicher Name. Für Art.-13-Blöcke bleibt `.ds-block` reserviert. */
+.ds-block > summary,
+.ks-aufklapper > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.ds-block-inhalt,
+.ks-aufklapper-inhalt {
+  max-height: 260px;
+  overflow-y: auto;
+  margin-top: 8px;
+  padding-right: 6px;
+  border-top: 1px solid var(--border);
+}
+.ds-block-inhalt h3,
+.ks-aufklapper-inhalt h3 {
+  font-size: 0.92rem;
+  margin: 12px 0 4px;
+}
+.ds-block-inhalt p,
+.ks-aufklapper-inhalt p { margin: 0 0 8px; }
+.ds-block-inhalt a,
+.ks-aufklapper-inhalt a { color: inherit; }
+
+/* ---------- Formular ---------- */
+
+.ks-feld { margin-bottom: 14px; }
+.ks-feld > label { display: block; font-weight: 600; margin-bottom: 5px; }
+.ks-feld .erklaerung { font-size: 0.84rem; color: var(--muted); margin-bottom: 6px; line-height: 1.45; }
+.ks-feld input[type="text"],
+.ks-feld input[type="tel"],
+.ks-feld input[type="email"],
+.ks-feld input[type="date"],
+.ks-feld textarea,
+.ks-feld select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  /* 16px verhindert das Hineinzoomen von iOS beim Antippen. */
+  font-size: 16px;
+  min-height: 48px;
+  background: var(--white);
+  color: var(--text);
+}
+.ks-feld textarea { min-height: 150px; resize: vertical; line-height: 1.55; }
+.ks-anonym-schalter {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--blue-light); border: 1px solid var(--blue);
+  border-radius: 10px; padding: 14px; margin-bottom: 14px;
+}
+.ks-anonym-schalter input { margin-top: 3px; width: 20px; height: 20px; flex: 0 0 auto; }
+.ks-quittung {
+  background: var(--green-light);
+  border: 2px solid var(--green);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+}
+.ks-quittung .code {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  display: block;
+  margin: 12px 0;
+  word-break: break-all;
+}
+
+/* ---------- Kleinkram ---------- */
+
+.ks-abschnitt { margin-bottom: 22px; }
+.ks-abschnitt > h2 {
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+.ks-abschnitt > .unter {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+.ks-frage {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.ks-frage > summary {
+  padding: 14px 16px; cursor: pointer; font-weight: 600;
+  min-height: 50px; display: flex; align-items: center;
+  list-style: none;
+}
+.ks-frage > summary::-webkit-details-marker { display: none; }
+.ks-frage-antwort { padding: 0 16px 14px; line-height: 1.6; color: var(--muted); }
+
+.ks-stelle {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.ks-stelle.notfall { border-color: var(--ks-notfall); border-left-width: 4px; }
+.ks-stelle strong { display: block; margin-bottom: 4px; }
+.ks-stelle p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+.ks-stelle-wege { display: flex; gap: 8px; flex-wrap: wrap; }
+.ks-stelle-wege a {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 13px; border-radius: 8px;
+  background: var(--ks-vertrauen); color: var(--white);
+  text-decoration: none; font-weight: 600; font-size: 0.9rem;
+  min-height: 42px;
+}
+.ks-stelle-wege a.sanft { background: var(--white); color: var(--ks-vertrauen); border: 1px solid var(--ks-vertrauen); }
+
+/* Damit der feste Meldeknopf nichts verdeckt, bekommt der Seiteninhalt unten
+   Luft. Ohne das ist die letzte Zeile jedes Tabs auf dem Handy nicht lesbar. */
+body.ks-hat-fixknopf .tab-inhalt { padding-bottom: 84px; }
+
+/* ---------- Nachgereicht: in der geteilten style.css nicht enthalten ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%);
+  z-index: 90;
+  background: var(--text);
+  color: var(--white);
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  font-size: 0.92rem;
+  max-width: min(420px, calc(100vw - 24px));
+  text-align: center;
+  line-height: 1.45;
+}
+.toast.fehler { background: var(--red); }
+.toast.gut { background: var(--green); }
+
+.filter-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.filter-row label { font-weight: 600; font-size: 0.9rem; }
+.filter-row select, .filter-row input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 16px;
+  min-height: 44px;
+  background: var(--white);
+  color: var(--text);
+}
+
+/* Die Kopfzeile darf auf dem Handy nicht in eine Zeile gequetscht werden. */
+@media (max-width: 560px) {
+  header h1 { font-size: 17px; }
+  .header-user { display: none; }
+  .ks-held { padding: 16px; }
+  .ks-held-text h2 { font-size: 1.25rem; }
+  .ks-held-foto { width: 76px; height: 76px; }
+}
+
+/* Tippziele. Die geteilte style.css gibt .btn 36 px — das ist für die Flotte in
+   Ordnung, aber diese App bedienen Kinder und aufgeregte Erwachsene am Handy.
+   Deshalb hier lokal auf 44 px angehoben, ohne die Flotte anzufassen.
+   Die Nav-Tabs bleiben bei ihren 39 px: die sehen in allen Apps gleich aus, und
+   eine einzelne abweichende Leiste wäre verwirrender als die zwei Millimeter. */
+.btn, a.btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.btn.tiny { min-height: 36px; }
+
+/* Dasselbe Argument gilt für das × am Dialog: die geteilte style.css gibt ihm
+   nur `padding: 4px 8px`, gemessen 30×29 px. Das ist der Knopf, mit dem ein Kind
+   aus dem halb getippten Meldeformular wieder herauskommt — er darf nicht das
+   kleinste Ziel der ganzen Seite sein. Das Kreuz selbst bleibt gleich groß, nur
+   die Fläche darum wächst. */
+.modal-close {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Niedrige Schirme: das quer gehaltene Handy ist nur 375 px hoch. Die geteilte
+   style.css hält oben und unten je 40 px frei (`.modal-overlay { padding: 40px }`)
+   und deckelt den Dialog auf `calc(100vh - 80px)`. Von 375 px bleiben damit
+   295 px Karte, minus 67 px Kopfzeile: **228 px Formularfläche**. Wer dort eine
+   Meldung schreibt, sieht knapp zwei Eingabefelder auf einmal.
+   Hier auf 12 px Rand heruntergesetzt — das bringt 56 px zurück (351 statt 295).
+
+   ⚠️ Zwei max-height-Zeilen mit Absicht (Muster wie f-alte-ios): `svh` ist die
+   Höhe MIT eingeblendeter Browserleiste und damit die einzige, bei der der
+   Dialog garantiert ganz ins Bild passt. Ein Browser ohne `svh` überliest die
+   zweite Zeile und behält die vh-Fassung. */
+@media (max-height: 500px) {
+  .modal-overlay { padding: 12px 16px; }
+  /* Die Kopfzeile ist durch das 44-px-Kreuz oben mitgewachsen (67 -> 81 px) und
+     hätte einen guten Teil des Gewinns gleich wieder aufgefressen. Auf niedrigen
+     Schirmen deshalb weniger Innenabstand — das Kreuz behält seine 44 px. */
+  .modal-header { padding: 8px 16px; }
+  .modal {
+    max-height: calc(100vh - 24px);
+    max-height: calc(100svh - 24px);
+  }
+}
+
+/* Das Feld "Dateien anhängen" war das letzte Tippziel unter 44 px (gemessen
+   2026-08-29: 303 × 24 px). Der Block `.ks-feld input[type="text"], …` weiter
+   oben zählt die Typen einzeln auf und hat `file` nie mitgenommen — das Feld
+   fiel damit auf die nackte Browser-Vorgabe zurück.
+
+   ⚠️ Bei `<input type="file">` öffnet ein Tipp auf das GANZE Element den
+   Dateidialog, nicht nur auf den Knopf darin. Die Höhe der Box ist hier also
+   wirklich das Tippziel — anders als beim Anonym-Häkchen, wo das Label die
+   Fläche liefert und die 20-px-Box daneben nicht zählt.
+
+   `::file-selector-button` wird trotzdem mitvergrößert: sonst sitzt ein kleiner
+   Knopf mittig in einer großen Box und sieht aus, als wäre nur er gemeint. */
+.ks-feld input[type="file"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--text);
+  font: inherit;
+  /* 16px wie bei den übrigen Feldern — darunter zoomt iOS beim Antippen hinein. */
+  font-size: 16px;
+  cursor: pointer;
+}
+.ks-feld input[type="file"]::file-selector-button {
+  min-height: 34px;
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--gray);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ---------- Unterschrift beim Konzept bestätigen (seit 2026-08-31) ----------
+   Übernommen aus E:\Trainerdaten\style.css, wo dieselbe Komponente steht.
+
+   ⚠️ Bewusst HIER und nicht in der geteilten style.css — dieselbe Begründung
+   wie bei den Tippzielen weiter oben: die Flotten-Datei bliebe sonst als
+   einzige abweichend, ohne dass es jemand sieht. Soll die Flotte das
+   bekommen, ist das ein eigener Vorgang über meine-multi-repo-rollout.
+
+   ⚠️ `touch-action: none` ist tragend, kein Feinschliff: ohne die Zeile
+   scrollt das Handy beim Unterschreiben die Seite, statt einen Strich zu
+   zeichnen. */
+.signature-box { margin-top: 10px; }
+.signature-box label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.signature-box canvas {
+  width: 100%;
+  height: 150px;
+  border: 1.5px dashed var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  touch-action: none;
+  display: block;
+}
+.signature-box canvas:active { border-color: var(--blue); }
