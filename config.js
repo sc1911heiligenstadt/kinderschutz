@@ -39,143 +39,16 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
-    version: "1.7",
-    groups: [
-      {
-        title: "Der Datenschutz-Text sagt jetzt auch, was bei Schulung und Bestätigung passiert",
-        items: [
-          "Der Text im Reiter „Info“ handelte ausschließlich von Meldungen. Über den Schulungsfortschritt und die Unterschrift unter dem Schutzkonzept stand dort kein Wort — obwohl beides gespeichert wird.",
-          "Neuer Abschnitt „Schulung und Bestätigung des Schutzkonzepts“: was gespeichert wird (Name, Zeitpunkt, Fassungsnummer, Unterschriftsbild), wozu, auf welcher Grundlage, wo es liegt und wie lange.",
-          "Wichtig darin: Die acht Wochen gelten nur für Meldungen. Eine Bestätigung bleibt, solange du für den Verein tätig bist — das steht jetzt ausdrücklich da, statt dass man die falsche Frist auf sich bezieht.",
-          "Der Abschnitt betrifft nur Trainerinnen, Trainer und Betreuende mit Vereinskonto. Für alle anderen ändert sich nichts."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.6",
-    groups: [
-      {
-        title: "Das Konzept wird jetzt hier bestätigt, am Ende der Schulung",
-        items: [
-          "Bisher lag der Text des Kinder- und Jugendschutzkonzepts in dieser App, unterschrieben wurde aber in den Trainerdaten. Zwei Orte für dieselbe Sache — wer die Schulung gemacht hatte, musste zum Bestätigen noch in eine zweite App.",
-          "Jetzt steht beides beieinander: Am Ende der Schulung erscheint der Abschnitt „Konzept bestätigen“ mit dem vollen Wortlaut zum Nachlesen und einem Feld für die Unterschrift.",
-          "Erst die Schulung, dann die Unterschrift. Der Abschnitt schaltet sich frei, sobald alle sechs Kapitel geschafft sind — vorher steht dort, wie viele noch fehlen.",
-          "Gespeichert wird die Bestätigung weiterhin in der Trainerakte, dort wo auch Vertrag und Verhaltenskodex liegen. Alle früher geleisteten Unterschriften bleiben gültig, es ändert sich nur der Weg dorthin.",
-          "In den Trainerdaten steht ab sofort nur noch, ob und wann bestätigt wurde, mit einem Knopf hierher.",
-          "Den Abschnitt sieht nur, wer im Verein einen Trainervertrag hat. Für Spieler, Eltern und alle anderen Angemeldeten bleibt er weg — das prüft der Server, nicht die Anzeige."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.5",
-    groups: [
-      {
-        title: "Das Feld für Anhänge ist jetzt so groß wie alle anderen",
-        items: [
-          "Beim Meldeformular war „Dateien anhängen“ das letzte Feld, das kleiner war als der Rest: 24 Pixel hoch, während alles andere mindestens 44 hat. Am Handy war das ein Zielen mit dem Daumennagel.",
-          "Grund war eine Lücke in der Gestaltung: Die Regel für Eingabefelder zählt die Feldarten einzeln auf und hatte die Dateiauswahl nie dabei. Sie fiel damit auf die nackte Vorgabe des Browsers zurück.",
-          "Jetzt ist das Feld 44 Pixel hoch, hat denselben Rahmen wie die übrigen und der Knopf „Durchsuchen“ darin ist ebenfalls größer. Ein Tipp irgendwo auf das Feld öffnet die Dateiauswahl.",
-          "Damit sind alle Bedienelemente im Meldeformular mindestens 44 Pixel groß."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.4",
-    groups: [
-      {
-        title: "Der schwebende Melde-Knopf verdeckt keine Notrufnummer mehr",
-        items: [
-          "In Fassung 1.3 erschien der Knopf sofort beim Öffnen der Seite — und lag damit auf dem Notfallkasten: quer gehalten mitten auf der 116111, hochkant auf dem Elterntelefon.",
-          "Jetzt wartet er, bis der Notfallkasten durchgescrollt ist. Am Handy ist das etwa ein Daumenwisch weit — wie weit genau, hängt davon ab, wie viele Nummern im Kasten stehen. Eine Nummer, die im Notfall gewählt wird, hat Vorrang.",
-          "Damit stimmt der Satz aus 1.3 „erscheint gleich beim Öffnen der Seite“ nicht mehr — er erscheint jetzt kurz danach. Alles andere bleibt: nie zwei gleiche Knöpfe gleichzeitig, und während das Meldeformular offen ist, ist er weg."
-        ]
-      },
-      {
-        title: "Größere Tippziele und mehr Platz im Meldeformular",
-        items: [
-          "Das × zum Schließen eines Dialogs war 30 mal 29 Pixel groß und damit das kleinste Ziel der Seite — ausgerechnet der Knopf, mit dem man aus einem halb getippten Formular wieder herauskommt. Jetzt sind es 44 mal 44 Pixel. Das Kreuz selbst sieht gleich aus, nur die Fläche drumherum ist größer.",
-          "Auf einem quer gehaltenen Handy ist der Bildschirm nur 375 Pixel hoch. Vom Meldeformular waren davon 228 Pixel sichtbar, also knapp zwei Eingabefelder. Jetzt sind es 290 Pixel — rund ein Viertel mehr, ohne dass etwas aus dem Bild fällt.",
-          "Am Computer und am hochkant gehaltenen Handy ändert sich an der Größe der Dialoge nichts."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.3",
-    groups: [
-      {
-        title: "Der Melde-Knopf ist am Handy jetzt immer erreichbar",
-        items: [
-          "Am Handy stand der große Melde-Knopf weit unterhalb des Bildschirms: auf der Startseite erst nach rund anderthalb Bildschirmen Wischen, quer gehaltenes Handy sogar nach zweieinhalb. Der mitschwebende Knopf am unteren Rand, der genau dafür da ist, blieb ausgerechnet dort weg.",
-          "Jetzt erscheint er, sobald der große Knopf nicht im Bild ist — also gleich beim Öffnen der Seite. Wer melden will, muss dafür nicht mehr suchen.",
-          "Im Kinderbereich heißt der schwebende Knopf jetzt „Ich möchte etwas erzählen“, genau wie der große Knopf darüber. Vorher stand dort die Erwachsenen-Formulierung „Verdacht oder Vorfall melden“.",
-          "Unverändert: Zwei gleiche Knöpfe stehen nie gleichzeitig da, und solange das Meldeformular offen ist, verschwindet der schwebende Knopf."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.2",
-    groups: [
-      {
-        title: "Was mit deinen Angaben passiert, steht jetzt direkt am Meldeformular",
-        items: [
-          "Über dem Absende-Knopf stand bisher nur, wozu wir deine Angaben verarbeiten. Jetzt stehen dort auch: wer verantwortlich ist (mit Anschrift und Telefonnummer), wie lange gespeichert wird und wo du dich beschweren kannst.",
-          "Der vollständige Datenschutz-Text lässt sich direkt dort aufklappen. Vorher gab es nur den Satz „steht im Tab Info“ — und der war nicht einmal anklickbar. Deine schon getippte Meldung geht dabei nicht verloren.",
-          "Der Text sagt außerdem ehrlich, was „anonym“ nicht leisten kann: Deine Meldung läuft wie jeder Seitenaufruf über die Adresse deines Anschlusses. Wir speichern sie nicht bei deiner Meldung, aber ganz spurlos ist es nicht. Wer das nicht will, findet dort den Hinweis auf die Nummer gegen Kummer."
-        ]
-      },
-      {
-        title: "Im Meldeweg stehen jetzt überall Klarnamen",
-        items: [
-          "Unter „Änderungen an dieser Liste“ standen bisher die Anmeldenamen der Konten — sichtbar für jeden Besucher, auch ohne Anmeldung. Jetzt stehen dort dieselben Klarnamen wie in der Liste darüber.",
-          "Die Zusage bleibt unverändert: Jede Änderung an der Liste wird protokolliert und ist für alle sichtbar. Niemand kann sich still eintragen."
-        ]
-      },
-      {
-        title: "Die Schulungsliste zeigt nur noch, wen sie betrifft",
-        items: [
-          "In der Nachweisliste standen alle Vereinskonten, auch die der Spielerinnen und Spieler. Die machen keine Übungsleiter-Schulung und stehen dort jetzt nicht mehr.",
-          "Wer bereits einen Schulungsstand hat, bleibt in jedem Fall in der Liste — ein erteilter Nachweis verschwindet nicht."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.1",
-    groups: [
-      {
-        title: "Freie Texte werden jetzt geprüft, bevor sie auf der Seite landen",
-        items: [
-          "Der Wortlaut des Schutzkonzepts und der Datenschutztext dürfen Formatierungen enthalten — Überschriften, Absätze, Aufzählungen, Fettschrift und Links. Das bleibt so.",
-          "Neu ist, dass alles andere entfernt wird, bevor der Text angezeigt wird. Wer die Texte pflegt, kann damit nichts mehr einbauen, was im Browser eines Besuchers etwas ausführt.",
-          "Das ist wichtig, weil derselbe Konzepttext auch in Trainerdaten steht — genau dort, wo die Trainerinnen und Trainer unterschreiben.",
-          "Links funktionieren weiter, aber nur noch zu Internetseiten, E-Mail-Adressen und Telefonnummern.",
-          "Im Normalbetrieb ändert sich nichts: Die vorhandenen Texte sehen unverändert aus."
-        ]
-      },
-      {
-        title: "Aufgeräumt wird jetzt auch, was liegen geblieben ist",
-        items: [
-          "Wer eine Datei an eine Meldung hängt, das Formular dann aber nicht absendet, hinterließ bisher eine Datei, von der niemand mehr wusste.",
-          "Solche Dateien werden jetzt nach zwei Tagen von allein entfernt — aber nur, wenn keine Meldung und kein Foto darauf verweist.",
-          "An echten Meldungen ändert das nichts. Es wird weiterhin NICHTS automatisch gelöscht, was zu einer Meldung gehört."
-        ]
-      }
-    ]
-  },
-  {
     version: "1.0",
     groups: [
       {
-        title: "Die Kinderschutz-App ist da",
+        title: "Die Anlaufstelle für Kinder- und Jugendschutz",
         items: [
-          "Eine eigene Anlaufstelle für Kinder- und Jugendschutz im Verein. Ansprechpartner, Meldeweg, Konzept, Schulung, Fragen und Hilfsangebote an einem Ort.",
+          "Eine eigene Anlaufstelle für den Kinder- und Jugendschutz im Verein. Ansprechpartner, Meldeweg, Konzept, Schulung, Fragen und Hilfsangebote an einem Ort.",
           "Der Info- und Meldeteil ist ohne Anmeldung erreichbar. Kinder, Jugendliche und Eltern haben keinen Vereins-Login — sie kämen sonst gar nicht hin.",
-          "Ganz oben auf der Startseite steht die Kinder- und Jugendschutzbeauftragte mit Foto, Erreichbarkeit und je einem Knopf zum Anrufen und Mailschreiben."
+          "Ganz oben auf der Startseite steht die Kinder- und Jugendschutzbeauftragte mit Foto, Erreichbarkeit und je einem Knopf zum Anrufen und Mailschreiben. Darunter stehen weitere Ansprechpartner im Verein.",
+          "Der Notfallkasten mit der 110, der Nummer gegen Kummer, dem Hilfetelefon Sexueller Missbrauch und dem Elterntelefon steht fest im Programm — er erscheint auch dann, wenn die App ihre Inhalte gerade nicht laden kann.",
+          "Unter „Hilfe“ stehen Beratungsstellen, Jugendamt und weitere Anlaufstellen von außen."
         ]
       },
       {
@@ -183,17 +56,46 @@ const APP_CHANGELOG = [
         items: [
           "Ein großer Knopf auf jeder Seite. Davor steht in einfachen Worten, was passiert und was nicht passiert.",
           "Melden geht anonym — Name und Kontakt sind freiwillig. Wer angemeldet ist und trotzdem anonym meldet, wird auch anonym gespeichert. Die App hängt keinen Namen heimlich dran.",
-          "Nach dem Absenden erscheint eine Quittungsnummer. Damit kann man später nachschauen, was aus der Meldung wurde, ohne sich zu erkennen zu geben.",
+          "Nach dem Absenden erscheint eine Quittungsnummer. Über „Schon gemeldet?“ auf der Startseite lässt sich damit jederzeit nachschauen, was aus der Meldung wurde — ohne sich zu erkennen zu geben. Angezeigt werden Eingangsdatum, Stand und die Antwort der Beauftragten, nie der eigene Meldetext.",
           "Bilder und PDF-Dateien können angehängt werden, höchstens drei. Der Dateityp wird am Inhalt geprüft, nicht am Namen.",
-          "Zugesagt sind drei Werktage bis zur Rückmeldung. Bleibt eine Meldung länger liegen, mahnt die App die Beauftragte."
+          "Zugesagt sind drei Werktage bis zur Rückmeldung. Bleibt eine Meldung länger liegen, mahnt die App die Beauftragte.",
+          "Am Handy schwebt ein Melde-Knopf am unteren Rand mit, sobald der große Knopf nicht im Bild ist. Er wartet aber, bis der Notfallkasten durchgescrollt ist — eine Nummer, die im Notfall gewählt wird, hat Vorrang. Zwei gleiche Knöpfe stehen nie gleichzeitig da, und solange das Meldeformular offen ist, ist der schwebende Knopf weg."
+        ]
+      },
+      {
+        title: "Was mit den Angaben passiert",
+        items: [
+          "Direkt über dem Absende-Knopf steht, wozu die Angaben verarbeitet werden, wer verantwortlich ist — mit Anschrift und Telefonnummer —, wie lange gespeichert wird und wo man sich beschweren kann. Der vollständige Datenschutz-Text lässt sich dort aufklappen, ohne dass die schon getippte Meldung verloren geht.",
+          "Der Text sagt außerdem ehrlich, was „anonym“ nicht leisten kann: Die Meldung läuft wie jeder Seitenaufruf über die Adresse des eigenen Anschlusses. Wir speichern sie nicht bei der Meldung, aber ganz spurlos ist es nicht. Wer das nicht will, findet dort den Hinweis auf die Nummer gegen Kummer.",
+          "Eine Meldung wird aufbewahrt, solange sie gebraucht wird, längstens acht Wochen nach Abschluss. Gelöscht wird von Hand, nicht automatisch — und der Stand „An externe Stelle gegeben“ hält die Frist an, solange bei einer Behörde oder Fachstelle etwas läuft.",
+          "Ein eigener Abschnitt behandelt Schulung und Bestätigung des Schutzkonzepts: was gespeichert wird (Name, Zeitpunkt, Fassungsnummer, Unterschriftsbild), wozu, auf welcher Grundlage, wo es liegt und wie lange. Die acht Wochen gelten nur für Meldungen — eine Bestätigung bleibt, solange man für den Verein tätig ist. Das betrifft nur Trainerinnen, Trainer und Betreuende mit Vereinskonto.",
+          "Eine angehängte Datei, deren Formular nie abgeschickt wurde, verschwindet nach zwei Tagen von allein — aber nur, wenn keine Meldung und kein Foto darauf verweist. An echten Meldungen ändert das nichts."
         ]
       },
       {
         title: "Wer die Meldungen lesen darf",
         items: [
           "Nur die eingetragenen Beauftragten. Der globale Administrator der Tools greift hier ausdrücklich NICHT durch.",
-          "Wer in der Liste steht, ist in der App für jeden sichtbar. Jede Änderung an der Liste wird protokolliert und ebenfalls angezeigt.",
-          "Push und E-Mail sagen nur, dass eine Meldung da ist. Kein Name, kein Ort, kein Inhalt — auch nicht im Betreff."
+          "Wer in der Liste steht, ist in der App für jeden sichtbar — auch für nicht angemeldete Besucher. Jede Änderung an der Liste wird protokolliert und mit Klarnamen angezeigt. Niemand kann sich still eintragen.",
+          "Nachricht aufs Handy und E-Mail sagen nur, dass eine Meldung da ist. Kein Name, kein Ort, kein Inhalt — auch nicht im Betreff. Nur die Antwort an den Melder trägt den Antworttext, damit er sie ohne Anmeldung lesen kann."
+        ]
+      },
+      {
+        title: "Die Bearbeitung einer Meldung",
+        items: [
+          "Jede Meldung hat einen von vier Ständen: neu, in Bearbeitung, an externe Stelle gegeben, abgeschlossen. Es gibt bewusst kein „unbegründet“ und kein „abgelehnt“ — die App bewertet nicht, ob ein Verdacht zutrifft. Das ist Sache der Fachstellen.",
+          "Die Liste lässt sich nach offenen, neuen, abgeschlossenen und nach abgelaufener Löschfrist filtern.",
+          "Was am Telefon, im Gespräch oder auf einem Zettel ankommt, lässt sich über „Meldung nacherfassen“ eintragen, damit alles an einem Ort steht. Nacherfasste Meldungen sind in der Liste als solche gekennzeichnet.",
+          "Ein deutlicher Hinweis steht über der Liste: Was hier steht, gehört nicht in eine Mannschaftsgruppe, nicht in den Trainerkreis und nicht in ein Gespräch am Spielfeldrand."
+        ]
+      },
+      {
+        title: "Schutzkonzept und Bestätigung",
+        items: [
+          "Das Kinder- und Jugendschutzkonzept steht im Wortlaut in der App, dazu eine Zusammenfassung in Kacheln. Über einen Knopf lässt es sich ausdrucken oder als PDF speichern.",
+          "Bestätigt wird das Konzept ebenfalls hier, am Ende der Schulung: mit dem vollen Wortlaut zum Nachlesen und einem Feld für die Unterschrift. Erst die Schulung, dann die Unterschrift — der Abschnitt schaltet sich frei, sobald alle sechs Kapitel geschafft sind; vorher steht dort, wie viele noch fehlen.",
+          "Gespeichert wird die Bestätigung in der Trainerakte, dort wo auch Vertrag und Verhaltenskodex liegen. In den Trainerdaten steht nur noch, ob und wann bestätigt wurde, mit einem Knopf hierher.",
+          "Den Abschnitt sieht nur, wer im Verein einen Trainervertrag hat. Für Spieler, Eltern und alle anderen Angemeldeten bleibt er weg — das prüft der Server, nicht die Anzeige."
         ]
       },
       {
@@ -201,21 +103,32 @@ const APP_CHANGELOG = [
         items: [
           "Sechs kurze Kapitel mit je einer Quizfrage am Ende. Lesen darf jeder, auch ohne Anmeldung.",
           "Wer angemeldet ist, sammelt Fortschritt und bekommt am Ende ein Abzeichen mit Datum.",
-          "Die Beauftragte sieht, wer durch ist. Sie kann je Person „Schulung nötig“ setzen; wer nach vier Wochen nicht durch ist, bekommt eine freundliche Erinnerung."
+          "Die Beauftragte sieht, wer durch ist. Sie kann je Person „Schulung nötig“ setzen; wer nach vier Wochen nicht durch ist, bekommt eine freundliche Erinnerung.",
+          "In der Nachweisliste stehen nur die Konten, die eine Übungsleiter-Schulung betrifft — Spielerinnen und Spieler nicht. Wer bereits einen Schulungsstand hat, bleibt in jedem Fall in der Liste: ein erteilter Nachweis verschwindet nicht."
         ]
       },
       {
         title: "Für Kinder und Jugendliche",
         items: [
           "Oben ein Umschalter auf eine eigene Fassung in einfacher Sprache: große Schrift, kurze Sätze, keine Fremdwörter.",
-          "Eigener Meldeknopf und die Nummer gegen Kummer immer im Blick."
+          "Eigener Meldeknopf — er heißt dort „Ich möchte etwas erzählen“ — und die Nummer gegen Kummer immer im Blick."
         ]
       },
       {
         title: "Alles pflegbar ohne Programmierung",
         items: [
-          "Ansprechpartner, Konzepttext, Schulungskapitel, Quizfragen, Fragen und Antworten, externe Stellen und die Texte des Meldewegs stehen im Verwaltungsbereich.",
-          "Solange nichts gespeichert wurde, zeigt die App die Entwurfsfassung — mit einem deutlichen Hinweis, dass sie noch nicht vom Verein freigegeben ist."
+          "Ansprechpartner, Konzepttext, Schulungskapitel, Quizfragen, Fragen und Antworten, externe Stellen und die Texte des Meldewegs stehen im Verwaltungsbereich. Nach dem Speichern ist eine Änderung sofort für alle sichtbar.",
+          "Solange nichts gespeichert wurde, zeigt die App die Entwurfsfassung — mit einem deutlichen Hinweis, dass sie noch nicht vom Verein freigegeben ist.",
+          "Für die Vereinsseite und den Aushang gibt es fertiges Werbematerial samt einer Druckseite mit der Adresse der App.",
+          "Die frei geschriebenen Texte — der Wortlaut des Schutzkonzepts und der Datenschutztext — dürfen Überschriften, Absätze, Aufzählungen, Fettschrift und Links enthalten. Alles andere wird entfernt, bevor der Text angezeigt wird; Links führen nur zu Internetseiten, E-Mail-Adressen und Telefonnummern. Wer die Texte pflegt, kann damit nichts einbauen, was im Browser eines Besuchers etwas ausführt."
+        ]
+      },
+      {
+        title: "Bedienung am Handy",
+        items: [
+          "Die Ansicht ist für das Handy gebaut und funktioniert dort hochkant wie quer.",
+          "Alle Bedienelemente im Meldeformular sind mindestens 44 Pixel groß — auch das Feld „Dateien anhängen“ und das × zum Schließen eines Dialogs. Ein Tipp irgendwo auf das Dateifeld öffnet die Auswahl.",
+          "Auf einem quer gehaltenen Handy ist der Bildschirm nur 375 Pixel hoch. Vom Meldeformular sind davon 290 Pixel sichtbar, ohne dass etwas aus dem Bild fällt."
         ]
       }
     ]
