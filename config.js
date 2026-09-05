@@ -39,6 +39,19 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.1",
+    groups: [
+      {
+        title: "Die Löschfrist läuft erst ab dem Abschluss",
+        items: [
+          "Eine Meldung, die noch offen ist, wird nicht mehr zum Löschen vorgeschlagen — auch nach Monaten nicht. Vorher trug gerade die vergessene, unbeantwortete Meldung nach acht Wochen den Hinweis „Bitte löschen“, während direkt darüber stand, dass die zugesagte Rückmeldung fehlt.",
+          "Der Filter „Löschfrist abgelaufen“ zeigt jetzt nur noch abgeschlossene Vorgänge. Das ist genau das, was der Datenschutztext zusagt: spätestens acht Wochen nach Abschluss.",
+          "Am Stand „An externe Stelle gegeben“ ändert sich nichts — dort ruht die Frist wie bisher."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0",
     groups: [
       {

@@ -1299,12 +1299,21 @@ function meldungenZeichnen() {
   });
 }
 
-// Wann ist eine Meldung löschreif? Die Frist läuft ab dem Abschluss. Steht sie
-// auf "extern", ruht sie — dann ist nie löschreif, egal wie alt.
+// Wann ist eine Meldung löschreif? Die Frist läuft ab dem Abschluss — nur dann.
+//
+// ⚠️ Eine offene, unbeantwortete Meldung ist KEIN erledigter Vorgang. Vorher
+// startete die Frist für jeden Stand außer "extern" beim Eingang; eine Meldung,
+// die auf "neu" liegen blieb — also gerade die vergessene —, trug nach acht
+// Wochen "Bitte löschen" und stand im Filter "Löschfrist abgelaufen", während
+// darüber "Seit N Werktagen ohne Rückmeldung" stand. Der Datenschutztext sagt
+// ausdrücklich "spätestens acht Wochen NACH Abschluss".
+//
+// "extern" ist damit von selbst mit abgedeckt (der Stand ist nicht
+// "abgeschlossen"), und ohne gesetztes abgeschlossenAm läuft gar nichts:
+// beim Zurückgehen auf einen offenen Stand wird das Feld gelöscht.
 function loeschReif(m, wochen) {
-  if (m.status === "extern") return false;
-  const start = m.status === "abgeschlossen" ? m.abgeschlossenAm : m.eingangAm;
-  return tageSeit(start) >= wochen * 7;
+  if (m.status !== "abgeschlossen" || !m.abgeschlossenAm) return false;
+  return tageSeit(m.abgeschlossenAm) >= wochen * 7;
 }
 
 function meldungHtml(m, wochen) {
