@@ -1715,7 +1715,14 @@ function vPartnerZeichnen() {
     box.appendChild(k);
   });
 
-  box.appendChild(vSpeichernKnopf("ansprechpartner", () => feld("ansprechpartner", [])));
+  // ⚠️ Hier MUSS neu gezeichnet werden. Dieser Block ist der einzige, der dem
+  // Speichern-Knopf keine eigene Liste, sondern den globalen Bestand reicht
+  // (() => feld(...)). Nach dem Speichern ersetzt vSpeichernKnopf diesen
+  // Bestand durch die frisch vom Server gelesene Fassung — neue Objekte. Die
+  // Eingabefelder zeigten danach auf Waisen: wer im selben Formular
+  // weitertippt und noch einmal speichert, schickt den alten Stand zurueck,
+  // sieht aber „Gespeichert." und seinen Text im Feld.
+  box.appendChild(vSpeichernKnopf("ansprechpartner", () => feld("ansprechpartner", []), vPartnerZeichnen));
 }
 
 function vBeauftragteZeichnen() {

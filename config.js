@@ -39,6 +39,18 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.2",
+    groups: [
+      {
+        title: "Ansprechpartner: die zweite Änderung geht nicht mehr verloren",
+        items: [
+          "Wer in der Verwaltung einen Ansprechpartner gespeichert hat und danach im selben Formular weitertippte — Telefonnummer korrigieren, E-Mail nachtragen —, verlor diese zweite Änderung. Die App meldete „Gespeichert.“, das Feld zeigte den getippten Wert weiter, im Bestand stand er nicht. Jetzt wird der Block nach jedem Speichern neu aufgebaut, damit die Felder wieder am aktuellen Stand hängen.",
+          "Betroffen war nur der Ansprechpartner-Block — also ausgerechnet die Kontaktdaten der Kinder- und Jugendschutzbeauftragten. Konzept, Meldeweg, Schulung, Fragen, Hilfsangebote, Kinderseite und Einstellungen speicherten schon immer richtig."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.1",
     groups: [
       {
