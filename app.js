@@ -1406,7 +1406,7 @@ function meldungOeffnen(id) {
     '<h3 style="margin:18px 0 6px; font-size:1rem;">Antwort an die meldende Person</h3>' +
     (m.antwort ? '<div style="background:var(--blue-light); border-radius:8px; padding:10px; margin-bottom:8px; line-height:1.5;">' +
       '<span class="muted" style="font-size:0.8rem;">' + esc(datumZeitDe(m.antwortAm)) + '</span><br />' + esc(m.antwort) + '</div>' : "") +
-    '<textarea id="antwort-text" maxlength="2000" style="width:100%; min-height:100px; padding:12px; border:1px solid var(--border); border-radius:10px; font:inherit; font-size:16px;" placeholder="Diese Nachricht sieht die meldende Person über ihre Quittungsnummer."></textarea>' +
+    '<textarea id="antwort-text" aria-label="Antwort an die meldende Person" maxlength="2000" style="width:100%; min-height:100px; padding:12px; border:1px solid var(--border); border-radius:10px; font:inherit; font-size:16px;" placeholder="Diese Nachricht sieht die meldende Person über ihre Quittungsnummer."></textarea>' +
     (m.melderEmail ? '<label style="display:flex; gap:8px; align-items:center; margin-top:8px;"><input type="checkbox" id="antwort-mail" checked style="width:18px; height:18px;" /> Zusätzlich per E-Mail schicken</label>' : "") +
     '<div class="btn-row" style="margin-top:8px;">' +
     '<button type="button" class="btn" id="btn-antwort-speichern">Antwort speichern</button>' +
@@ -2052,7 +2052,7 @@ function vWerbungZeichnen() {
     '<code style="display:block; background:var(--gray); padding:12px; border-radius:8px; word-break:break-all; margin-bottom:14px;">' + esc(url) + '</code>' +
     '<div class="btn-row"><button type="button" class="btn secondary" id="btn-aushang">Aushang zum Ausdrucken öffnen</button></div>' +
     '<h3 style="margin:20px 0 8px; font-size:1rem;">Text für die Vereinsseite</h3>' +
-    '<textarea readonly style="width:100%; min-height:200px; padding:12px; border:1px solid var(--border); border-radius:10px; font:inherit; font-size:14px;">' +
+    '<textarea readonly aria-label="Text für die Vereinsseite" style="width:100%; min-height:200px; padding:12px; border:1px solid var(--border); border-radius:10px; font:inherit; font-size:14px;">' +
     esc("Kinder- und Jugendschutz\n\n" +
       "Beim 1. SC 1911 Heiligenstadt e.V. soll sich jedes Kind sicher fühlen. " +
       "Wenn du eine Frage hast, dir Sorgen um ein Kind machst oder etwas melden möchtest, " +

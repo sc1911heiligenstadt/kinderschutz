@@ -39,6 +39,19 @@ const MELDE_STAENDE = [
 
 const APP_CHANGELOG = [
   {
+    version: "1.3",
+    groups: [
+      {
+        title: "Vorleseprogramme finden zwei Textfelder",
+        items: [
+          "Das Feld für die Antwort an die meldende Person hatte nur einen Platzhalter, der beim Tippen verschwindet.",
+          "Der Vorlagentext für die Vereinsseite lag in einem Feld ganz ohne Namen.",
+          "Beide tragen jetzt einen festen Namen. Am Bildschirm ändert sich nichts."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.2",
     groups: [
       {
