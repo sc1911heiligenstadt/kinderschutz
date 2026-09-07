@@ -37,7 +37,127 @@ const MELDE_STAENDE = [
   { id: "abgeschlossen", label: "Abgeschlossen", farbe: "gruen", beschreibung: "Die Bearbeitung ist beendet. Ab hier läuft die Löschfrist." }
 ];
 
+// Was die App kann — Quelle der Karte "Funktionen" im Info-Reiter.
+// ⚠️ Hier steht der ZUSTAND, nicht die Änderung: keine Versionsnummern, keine
+// Daten, kein „neu“ und kein „jetzt“. Was sich geändert hat, steht im
+// APP_CHANGELOG darunter.
+const APP_FUNKTIONEN = [
+  {
+    title: "Wofür dieses Werkzeug da ist",
+    items: [
+      "Die Anlaufstelle für den Kinder- und Jugendschutz im Verein: Ansprechpartner, Meldeweg, Schutzkonzept, Schulung, häufige Fragen und Hilfsangebote an einem Ort.",
+      "Ganz oben steht die Kinder- und Jugendschutzbeauftragte mit Foto, Erreichbarkeit und je einem Knopf zum Anrufen und Mailschreiben. Darunter stehen weitere Ansprechpartner im Verein."
+    ]
+  },
+  {
+    title: "Ohne Anmeldung erreichbar",
+    items: [
+      "Der Info- und Meldeteil hat bewusst kein Login. Kinder, Jugendliche und Eltern haben keinen Vereins-Login — hinter einer Anmeldeschranke kämen sie gar nicht hin.",
+      "Lesen und melden geht ohne Konto. Ein Vereinskonto braucht nur, wer Schulungsfortschritt sammeln, das Schutzkonzept bestätigen oder Inhalte pflegen will."
+    ]
+  },
+  {
+    title: "Verdacht oder Vorfall melden",
+    items: [
+      "Ein großer Melde-Knopf steht auf jeder Seite. Am Handy schwebt er am unteren Rand mit, sobald der große Knopf nicht im Bild ist — aber erst, wenn der Notfallkasten durchgescrollt ist.",
+      "Vor dem Formular steht in einfachen Worten, was passiert und was nicht passiert. Darüber steht namentlich, wer diese Meldung lesen wird.",
+      "Melden geht anonym — Name und Kontakt sind freiwillig. Wer angemeldet ist und trotzdem anonym meldet, wird auch anonym gespeichert; die App hängt keinen Namen heimlich dran.",
+      "Bilder und PDF-Dateien lassen sich anhängen, höchstens drei. Der Dateityp wird am Inhalt geprüft, nicht am Namen."
+    ]
+  },
+  {
+    title: "Wer die Meldungen liest",
+    items: [
+      "Eine eingegangene Meldung liest ausschließlich, wer in der Liste der Kinder- und Jugendschutzbeauftragten steht. Sonst niemand.",
+      "Der Administrator der Tools darf Inhalte pflegen und diese Liste ändern — die Meldungen selbst bekommt er nicht zu sehen. Das ist keine Einstellung, sondern so gebaut, und der Server schickt ihm die Meldungen gar nicht erst.",
+      "Wer in der Liste steht, ist in der App für jeden sichtbar, auch für nicht angemeldete Besucher. Jede Änderung an der Liste wird protokolliert und mit Klarnamen angezeigt; still eintragen kann sich niemand.",
+      "Ist niemand als Beauftragte eingetragen, öffnet das Meldeformular gar nicht erst und verweist auf die Nummern im Bereich Hilfe. Eine Meldung, die niemand lesen kann, entgegenzunehmen wäre schlimmer als eine ehrliche Absage."
+    ]
+  },
+  {
+    title: "Nach dem Absenden",
+    items: [
+      "Es erscheint eine Quittungsnummer. Über „Schon gemeldet?“ auf der Startseite lässt sich damit nachschauen, was aus der Meldung wurde, ohne sich zu erkennen zu geben.",
+      "Angezeigt werden Eingangsdatum, Stand und die Antwort der Beauftragten — nie der eigene Meldetext.",
+      "Zugesagt sind drei Werktage bis zur Rückmeldung. Bleibt eine Meldung länger liegen, mahnt die App die Beauftragte.",
+      "Nachricht aufs Handy und E-Mail sagen nur, dass eine Meldung da ist. Kein Name, kein Ort, kein Inhalt — auch nicht im Betreff."
+    ]
+  },
+  {
+    title: "Die Bearbeitung einer Meldung",
+    items: [
+      "Vier Stände: neu, in Bearbeitung, an externe Stelle gegeben, abgeschlossen. Es gibt bewusst kein „unbegründet“ und kein „abgelehnt“ — die App bewertet nicht, ob ein Verdacht zutrifft. Das ist Sache der Fachstellen.",
+      "Die Liste lässt sich nach offenen, neuen, abgeschlossenen und nach abgelaufener Löschfrist filtern.",
+      "Was am Telefon, im Gespräch oder auf einem Zettel ankommt, lässt sich nacherfassen und ist in der Liste als solches gekennzeichnet.",
+      "Über der Liste steht ein deutlicher Hinweis: Was hier steht, gehört nicht in eine Mannschaftsgruppe, nicht in den Trainerkreis und nicht in ein Gespräch am Spielfeldrand."
+    ]
+  },
+  {
+    title: "Was mit den Angaben passiert",
+    items: [
+      "Direkt über dem Absende-Knopf steht die Pflichtinformation nach Art. 13 DSGVO: Zweck, Verantwortlicher mit Anschrift und Telefonnummer, Speicherdauer und Beschwerdeweg. Der vollständige Text lässt sich dort aufklappen, ohne dass die schon getippte Meldung verloren geht.",
+      "Der Text sagt auch, was „anonym“ nicht leisten kann: Die Meldung läuft wie jeder Seitenaufruf über die Adresse des eigenen Anschlusses. Wer das nicht will, findet dort den Hinweis auf die Nummer gegen Kummer.",
+      "Eine Meldung wird aufbewahrt, solange sie gebraucht wird, längstens acht Wochen nach Abschluss. Der Stand „An externe Stelle gegeben“ hält die Frist an.",
+      "Gelöscht wird von Hand, nicht automatisch."
+    ]
+  },
+  {
+    title: "Schutzkonzept und Bestätigung",
+    items: [
+      "Das Kinder- und Jugendschutzkonzept steht im Wortlaut in der App, dazu eine Zusammenfassung in Kacheln und ein Knopf zum Ausdrucken oder Speichern als PDF.",
+      "Bestätigt wird es am Ende der Schulung, mit vollem Wortlaut zum Nachlesen und einem Feld für die Unterschrift. Der Abschnitt schaltet sich frei, sobald alle sechs Kapitel geschafft sind.",
+      "Die Bestätigung liegt in der Trainerakte, dort wo auch Vertrag und Verhaltenskodex liegen. In den Trainerdaten steht nur, ob und wann bestätigt wurde.",
+      "Den Abschnitt sieht nur, wer im Verein einen Trainervertrag hat — das prüft der Server, nicht die Anzeige."
+    ]
+  },
+  {
+    title: "Schulung mit Nachweis",
+    items: [
+      "Sechs kurze Kapitel mit je einer Quizfrage am Ende. Lesen darf jeder, auch ohne Anmeldung.",
+      "Wer angemeldet ist, sammelt Fortschritt und bekommt am Ende ein Abzeichen mit Datum.",
+      "Die Beauftragte sieht, wer durch ist, und kann je Person „Schulung nötig“ setzen; wer nach vier Wochen nicht durch ist, bekommt eine freundliche Erinnerung.",
+      "In der Nachweisliste stehen nur Konten, die eine Übungsleiter-Schulung betrifft. Ein bereits erteilter Nachweis verschwindet nicht aus der Liste."
+    ]
+  },
+  {
+    title: "Für Kinder und Jugendliche",
+    items: [
+      "Ein Umschalter oben führt zu einer eigenen Fassung in einfacher Sprache: große Schrift, kurze Sätze, keine Fremdwörter.",
+      "Dort heißt der Meldeknopf „Ich möchte etwas erzählen“, und die Nummer gegen Kummer bleibt im Blick."
+    ]
+  },
+  {
+    title: "Notfall und Hilfe von außen",
+    items: [
+      "Der Notfallkasten mit der 110, der Nummer gegen Kummer, dem Hilfetelefon Sexueller Missbrauch und dem Elterntelefon steht fest im Programm. Er erscheint auch dann, wenn die App ihre Inhalte gerade nicht laden kann.",
+      "Unter „Hilfe“ stehen Beratungsstellen, Jugendamt und weitere Anlaufstellen von außen."
+    ]
+  },
+  {
+    title: "Alles pflegbar ohne Programmierung",
+    items: [
+      "Ansprechpartner, Konzepttext, Schulungskapitel, Quizfragen, Fragen und Antworten, externe Stellen und die Texte des Meldewegs stehen im Verwaltungsbereich. Nach dem Speichern ist eine Änderung sofort für alle sichtbar.",
+      "Solange nichts gespeichert wurde, zeigt die App die Entwurfsfassung — mit einem deutlichen Hinweis, dass sie noch nicht vom Verein freigegeben ist.",
+      "Für Vereinsseite und Aushang gibt es fertiges Werbematerial samt einer Druckseite mit der Adresse der App.",
+      "In den frei geschriebenen Texten sind Überschriften, Absätze, Aufzählungen, Fettschrift und Links erlaubt. Alles andere wird vor dem Anzeigen entfernt; Links führen nur zu Internetseiten, E-Mail-Adressen und Telefonnummern."
+    ]
+  }
+];
+
 const APP_CHANGELOG = [
+  {
+    version: "1.4",
+    groups: [
+      {
+        title: "Im Info-Reiter steht jetzt, was die App kann",
+        items: [
+          "Die Liste der Änderungen und die Versionsnummer sind aus dem Info-Reiter verschwunden.",
+          "Stattdessen steht dort die Karte „Funktionen“: was die App kann, nach Themen geordnet.",
+          "Was sich geändert hat, steht weiterhin in den Neuigkeiten auf der Startseite der Tools-Übersicht."
+        ]
+      }
+    ]
+  },
   {
     version: "1.3",
     groups: [

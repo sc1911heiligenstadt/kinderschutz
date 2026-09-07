@@ -115,8 +115,8 @@ function werktageSeit(iso) {
 document.addEventListener("DOMContentLoaded", start);
 
 async function start() {
-  $("app-version").textContent = APP_VERSION;
   notfallZeichnen();
+  funktionenZeichnen();
   changelogZeichnen();
   navVerdrahten();
   modusVerdrahten();
@@ -501,8 +501,27 @@ function datenschutzZeichnen() {
   $("info-datenschutz").innerHTML = e.datenschutzHtml || VORGABE_DATENSCHUTZ;
 }
 
+// Die Karte "Funktionen" im Info-Reiter: was die App kann, nach Themen
+// geordnet. Sie hat die frühere Änderungsliste an dieser Stelle abgelöst.
+function funktionenZeichnen() {
+  const ziel = $("funktionen-list");
+  if (!ziel) return;
+  ziel.innerHTML = APP_FUNKTIONEN.map((g) =>
+    '<div class="changelog-group">' +
+    '<div class="cg-title">' + esc(g.title) + '</div>' +
+    '<ul class="cg-items">' + g.items.map((i) => '<li>' + esc(i) + '</li>').join("") + '</ul>' +
+    '</div>').join("");
+}
+
+// ⚠️ Bleibt stehen, obwohl die Karte "Was ist neu?" aus dem Info-Reiter
+// verschwunden ist: APP_CHANGELOG wird weitergepflegt und ist die Quelle für
+// die große Anleitung und für die Neuigkeiten auf der Startseite der
+// Tools-Übersicht. Ohne den Wächter stirbt der Seitenstart an null, sobald
+// der Behälter fehlt.
 function changelogZeichnen() {
-  $("changelog").innerHTML = APP_CHANGELOG.map((b) =>
+  const ziel = $("changelog");
+  if (!ziel) return;
+  ziel.innerHTML = APP_CHANGELOG.map((b) =>
     '<div style="margin-bottom:16px;"><strong>Version ' + esc(b.version) + '</strong>' +
     b.groups.map((g) =>
       '<div style="margin-top:8px;"><em>' + esc(g.title) + '</em><ul style="margin:6px 0 0 20px;">' +
